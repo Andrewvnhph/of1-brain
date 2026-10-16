@@ -17,6 +17,7 @@ AI tuyệt đối tuân thủ scope này khi làm việc với code thật:
 | Repo | Path | Scope | AI được phép |
 |------|------|-------|-------------|
 | **`of1-tms`** | `/Users/admin/OF1/forgejo/of1-platform/of1-tms` | **WRITABLE** | grep + read + **edit + commit** (trên nhánh `ai/<slug>` off `develop`, KHÔNG push `develop`, KHÔNG merge) |
+| **`of1-document`** | `/Users/admin/OF1/forgejo/of1-platform/of1-document` | **WRITABLE** | grep + read + **edit + commit** (trên nhánh `ai/<slug>` off `develop`, KHÔNG push `develop`, KHÔNG merge). Dùng cho lib document viewer share dùng các app (xlsx, pdf, ...) |
 | `of1-platform` | `/Users/admin/OF1/forgejo/of1-platform/of1-platform` | **READ-ONLY** | grep + read để grounding. **KHÔNG edit, KHÔNG commit.** |
 | `of1-core` | `/Users/admin/OF1/forgejo/of1-platform/of1-core` | **READ-ONLY** | grep + read để grounding. **KHÔNG edit, KHÔNG commit.** |
 | `of1-webui` | `/Users/admin/OF1/forgejo/of1-platform/of1-webui` | **READ-ONLY** | grep + read để grounding. **KHÔNG edit, KHÔNG commit.** |
@@ -78,6 +79,7 @@ Trước khi design/openspec/code cho TODO trong thư mục này, AI PHẢI đ�
 - **FE call BE**: dùng `appContext.getBackendConfigs().getBackendConfig('tms').createHttpBackendCall('<Service>', '<method>', params)`.
 - **DbEntityListPlugin**: `this.backend = { backend: 'tms', service: '...', searchMethod: '...' }` — nếu quên `backend: 'tms'` sẽ default về `platform` (bug ngầm).
 - **Input FE**: KHÔNG viết raw `<input/>`, `<select/>`, `<textarea/>`. Luôn dùng `bs.BBString`, `bs.BBBoolean`, `bs.BBNumber`, `bs.BBDate`, `bs.BBSelect`, `bs.BBTextArea` (xem `../../designs/of1-tms/rules/frontend.md` §3.2).
+- **Notification FE** (3 cấp ưu tiên): (1) API call → chain `.withEntityOpNotification(op, entityLabel, affectedCount?)` tự wire success + fail toast; (2) client-side action hoặc API success cần rich content runtime → `appContext.addOSNotification`; (3) error chi tiết / validation blocking → `bs.notificationShow` static. Chi tiết `frontend.md` §3.4.3.
 - **BBRef family** (reference picker — `BBRefTMSEmployee`, `BBRefAccount`, …): **chỉ import từ `of1-tms`** (`webui/tms/src/...`), KHÔNG từ `of1-platform`. Cần `BBRef*` mới → **DỪNG, hỏi dev** trước, không tự tạo.
 - **Thêm UI mới ở đâu?** Follow flow `Init.tsx` → `registerTmsShellApps` → `createTmsScreens` → 1 trong 9 Screen module (`shell/init/{Search,Report,Bill,Fleet,Ops,RU,Reconcile,Settings,Guide}Screen.tsx`). Checklist step-by-step tại `../../designs/of1-tms/rules/frontend.md` §5.7. Key files tại §10.
 
