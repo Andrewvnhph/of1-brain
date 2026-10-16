@@ -15,6 +15,7 @@
 - TODO cross-cutting (không thuộc module nào) → `[overview]`.
 
 ## TODO (dev)
+- [ ] [overview,+ui] `of1-tms`: migrate imports `@of1-webui/platform` → `@of1-dev01/core` (match pattern `of1-document` đã migrate xong). **Scope**: 16 files trong `webui/tms/src` import `module.security.*` từ `@of1-webui/platform` → thay bằng named import từ `@of1-dev01/core` (`plugin.DOCUMENT_PLUGIN_REGISTRY`, `UIApiPlugin`, `UIApiPluginManager`, `ApiResponse`, `BBRefAccessToken`, `BACKEND_CONFIGS`, `BackendConfig`, `host`, `ScreenSecurity`, `ShellAppRegistry`, `AppEntry`). Reference pattern: `of1-document/webui/document/src/Init.tsx` dùng `plugin.DOCUMENT_PLUGIN_REGISTRY` thay `module.security.DOCUMENT_PLUGIN_REGISTRY`. Sau migrate, drop `@of1-webui/platform` khỏi `webui/tms/package.json` dependencies
 - [ ] [overview,+ui] `of1-document`: lib document viewer file Excel (xlsx) — thay thế Office Web Viewer (`view.officeapps.live.com`) hay bị stuck "fetching your file". Research options SheetJS / luckysheet / x-spreadsheet / handsontable + build embeddable component dùng chung cho TMS (bill attachment preview, imported history xlsx) và các app OF1 khác
 - [x] [+ui,bill] Chứng từ đính kèm: nghiên cứu khả năng kéo-thả từ Outlook mà không cần tải file về máy
 - [x] [+ui,bill] Phase 1 — Add drag-drop handler cho `UIMessageForm` attachment area (FE only, 1 file, dropped file → `attB64DataMap`, không BE/DB change) ✅ merged PR #424
