@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<title>of1-document · Excel Viewer Demo (SheetJS)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root { color-scheme: light; }
+  body { font: 13px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; background: #f6f8fa; color: #24292f; }
+  header { padding: 10px 16px; background: #fff; border-bottom: 1px solid #d0d7de; }
+  .toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .toolbar input[type=url] { flex: 1 1 420px; padding: 6px 10px; border: 1px solid #d0d7de; border-radius: 6px; font: inherit; }
+  .toolbar input[type=file] { font: inherit; }
+  .toolbar button { padding: 6px 14px; border: 1px solid #0969da; background: #0969da; color: #fff; border-radius: 6px; cursor: pointer; font: inherit; }
+  .toolbar button.secondary { background: #fff; color: #0969da; }
+  .toolbar button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .toolbar label { color: #57606a; font-size: 12px; }
+  .status { padding: 6px 16px; background: #f6f8fa; color: #57606a; font-size: 12px; min-height: 20px; }
+  .status.error { background: #ffebe9; color: #cf222e; }
+  .status.ok { background: #dafbe1; color: #116329; }
+  .tabs { display: flex; gap: 2px; padding: 0 16px; background: #fff; border-bottom: 1px solid #d0d7de; overflow-x: auto; }
+  .tabs .tab { padding: 8px 14px; border: 1px solid transparent; border-bottom: none; background: transparent; cursor: pointer; font: inherit; color: #57606a; white-space: nowrap; }
+  .tabs .tab.active { background: #f6f8fa; color: #24292f; border-color: #d0d7de; border-radius: 6px 6px 0 0; margin-bottom: -1px; }
+  .sheet-wrap { padding: 12px 16px; background: #f6f8fa; }
+  .sheet-wrap table { border-collapse: collapse; background: #fff; font-size: 12px; }
+  .sheet-wrap th, .sheet-wrap td { border: 1px solid #d0d7de; padding: 4px 8px; vertical-align: top; max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sheet-wrap th { background: #f6f8fa; font-weight: 600; }
+  .sheet-wrap tr:nth-child(even) td { background: #fafbfc; }
+  .meta { padding: 8px 16px; color: #57606a; font-size: 11px; background: #fff; border-bottom: 1px solid #d0d7de; }
+  .meta code { background: #eaeef2; padding: 1px 6px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="toolbar">
+    <input type="url" id="url" placeholder="https://... (xlsx URL)" value="https://beelogistics.cloud/storage/s3/46ACIDIUP27YQYPDRAQ3WSHSGPINJGCSMLQ5JXTWPWYA4575DZP74NU66VICXZSAVH3OJRKAVTDRUUXBVV4F7TWQYYGC4SWSRP6JRMQQSUPDEHH3KZA5MJONSZNBNHSLV6GXZPCUVNBWJOYBTLACYJX3AJCCTDRCPBTBWNQ2D2LV5QXZGARQ====" />
+    <button id="loadUrl">Load from URL</button>
+    <label>hoặc</label>
+    <input type="file" id="file" accept=".xlsx,.xlsm,.xls" />
+    <button id="clear" class="secondary">Clear</button>
+  </div>
+</header>
+<div class="status" id="status">Chọn file xlsx hoặc nhập URL rồi bấm Load.</div>
+<div class="meta" id="meta" hidden></div>
+<div class="tabs" id="tabs"></div>
+<div class="sheet-wrap" id="sheetWrap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+  const $url = document.getElementById('url');
+  const $file = document.getElementById('file');
+  const $loadUrl = document.getElementById('loadUrl');
+  const $clear = document.getElementById('clear');
+  const $status = document.getElementById('status');
+  const $meta = document.getElementById('meta');
+  const $tabs = document.getElementById('tabs');
+  const $sheetWrap = document.getElementById('sheetWrap');
+
+  let currentWb = null;
+  let currentSheetName = null;
+
+  function setStatus(msg, kind) {
+    $status.textContent = msg;
+    $status.className = 'status' + (kind ? ' ' + kind : '');
+  }
+
+  function clearViewer() {
+    currentWb = null;
+    currentSheetName = null;
+    $meta.hidden = true;
+    $meta.textContent = '';
+    $tabs.innerHTML = '';
+    $sheetWrap.innerHTML = '';
+  }
+
+  async function loadFromUrl(url) {
+    if (!url) { setStatus('URL rỗng', 'error'); return; }
+    setStatus('Fetching ' + url + ' ...');
+    const t0 = performance.now();
+    try {
+      const resp = await fetch(url, { mode: 'cors', credentials: 'omit' });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status + ' ' + resp.statusText);
+      const buf = await resp.arrayBuffer();
+      const bytes = buf.byteLength;
+      setStatus('Parsing ' + (bytes / 1024).toFixed(0) + ' KB ...');
+      const wb = XLSX.read(buf, { type: 'array' });
+      renderWorkbook(wb, { source: 'url', bytes, elapsedMs: Math.round(performance.now() - t0) });
+    } catch (e) {
+      console.error(e);
+      setStatus('FAIL: ' + e.message + ' (có thể CORS block — xem console)', 'error');
+    }
+  }
+
+  async function loadFromFile(file) {
+    setStatus('Reading ' + file.name + ' ...');
+    const t0 = performance.now();
+    try {
+      const buf = await file.arrayBuffer();
+      const wb = XLSX.read(buf, { type: 'array' });
+      renderWorkbook(wb, { source: 'file:' + file.name, bytes: buf.byteLength, elapsedMs: Math.round(performance.now() - t0) });
+    } catch (e) {
+      console.error(e);
+      setStatus('Parse FAIL: ' + e.message, 'error');
+    }
+  }
+
+  function renderWorkbook(wb, info) {
+    currentWb = wb;
+    currentSheetName = wb.SheetNames[0] || null;
+    $meta.hidden = false;
+    $meta.innerHTML = 'source: <code>' + info.source + '</code> · '
+      + info.bytes + ' bytes · parsed in ' + info.elapsedMs + ' ms · '
+      + wb.SheetNames.length + ' sheet(s)';
+    $tabs.innerHTML = '';
+    wb.SheetNames.forEach((name) => {
+      const btn = document.createElement('button');
+      btn.className = 'tab' + (name === currentSheetName ? ' active' : '');
+      btn.textContent = name;
+      btn.onclick = () => switchSheet(name);
+      $tabs.appendChild(btn);
+    });
+    renderSheet(currentSheetName);
+    setStatus('OK · ' + wb.SheetNames.length + ' sheets · ' + info.elapsedMs + ' ms', 'ok');
+  }
+
+  function switchSheet(name) {
+    currentSheetName = name;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.textContent === name));
+    renderSheet(name);
+  }
+
+  function renderSheet(name) {
+    if (!currentWb || !name) return;
+    const sheet = currentWb.Sheets[name];
+    const html = XLSX.utils.sheet_to_html(sheet, { editable: false, header: '', footer: '' });
+    $sheetWrap.innerHTML = html;
+  }
+
+  $loadUrl.onclick = () => { clearViewer(); loadFromUrl($url.value.trim()); };
+  $file.onchange = (e) => { const f = e.target.files && e.target.files[0]; if (f) { clearViewer(); loadFromFile(f); } };
+  $clear.onclick = () => { $file.value = ''; clearViewer(); setStatus('Cleared.'); };
+</script>
+</body>
+</html>
