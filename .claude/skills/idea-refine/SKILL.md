@@ -7,7 +7,7 @@ description: Refines raw ideas into sharp, actionable concepts through structure
 
 Refines raw ideas into sharp, actionable concepts worth building through structured divergent and convergent thinking.
 
-**Nơi lưu output (ghi đè mọi path repo-local bên dưới):** one-pager → `~/dev/wiki/raw/YYMMDD-<idea-name>.md`. Bỏ qua `docs/ideas/...`.
+**Nơi lưu output (ghi đè mọi path repo-local bên dưới):** one-pager → `brainstorms/<idea-name>.md` (repo-relative, điểm vào của pipeline của of1-brain). Bỏ qua `docs/ideas/...`.
 
 ## How It Works
 
