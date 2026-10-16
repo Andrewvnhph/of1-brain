@@ -15,6 +15,7 @@
 - TODO cross-cutting (không thuộc module nào) → `[overview]`.
 
 ## TODO (dev)
+- [ ] [overview,+ui] `of1-document`: lib document viewer file Excel (xlsx) — thay thế Office Web Viewer (`view.officeapps.live.com`) hay bị stuck "fetching your file". Research options SheetJS / luckysheet / x-spreadsheet / handsontable + build embeddable component dùng chung cho TMS (bill attachment preview, imported history xlsx) và các app OF1 khác
 - [x] [+ui,bill] Chứng từ đính kèm: nghiên cứu khả năng kéo-thả từ Outlook mà không cần tải file về máy
 - [x] [+ui,bill] Phase 1 — Add drag-drop handler cho `UIMessageForm` attachment area (FE only, 1 file, dropped file → `attB64DataMap`, không BE/DB change) ✅ merged PR #424
 - [x] [+ui,bill] Phase 1.1 — Add paste (Ctrl+V) attachment cho `UIMessageForm` — Outlook drag-drop ko reliable (virtual-file CFSTR_FILEDESCRIPTOR + dropEffect negotiation phức tạp qua test), chuyển sang paste. Code drag-drop research đã clean up (-210/+10 lines). ✅ merged PR #425
