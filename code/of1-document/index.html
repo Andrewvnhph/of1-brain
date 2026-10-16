@@ -34,6 +34,7 @@
 <header>
   <div class="toolbar">
     <input type="url" id="url" placeholder="https://... (xlsx URL)" value="https://beelogistics.cloud/storage/s3/46ACIDIUP27YQYPDRAQ3WSHSGPINJGCSMLQ5JXTWPWYA4575DZP74NU66VICXZSAVH3OJRKAVTDRUUXBVV4F7TWQYYGC4SWSRP6JRMQQSUPDEHH3KZA5MJONSZNBNHSLV6GXZPCUVNBWJOYBTLACYJX3AJCCTDRCPBTBWNQ2D2LV5QXZGARQ====" />
+    <label><input type="checkbox" id="useProxy" checked /> Via proxy</label>
     <button id="loadUrl">Load from URL</button>
     <label>hoặc</label>
     <input type="file" id="file" accept=".xlsx,.xlsm,.xls" />
@@ -48,6 +49,7 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
   const $url = document.getElementById('url');
+  const $useProxy = document.getElementById('useProxy');
   const $file = document.getElementById('file');
   const $loadUrl = document.getElementById('loadUrl');
   const $clear = document.getElementById('clear');
@@ -75,19 +77,21 @@
 
   async function loadFromUrl(url) {
     if (!url) { setStatus('URL rỗng', 'error'); return; }
-    setStatus('Fetching ' + url + ' ...');
+    const viaProxy = $useProxy.checked;
+    const fetchUrl = viaProxy ? ('/proxy?url=' + encodeURIComponent(url)) : url;
+    setStatus('Fetching ' + (viaProxy ? '[proxy] ' : '') + url + ' ...');
     const t0 = performance.now();
     try {
-      const resp = await fetch(url, { mode: 'cors', credentials: 'omit' });
+      const resp = await fetch(fetchUrl, { mode: 'cors', credentials: 'omit' });
       if (!resp.ok) throw new Error('HTTP ' + resp.status + ' ' + resp.statusText);
       const buf = await resp.arrayBuffer();
       const bytes = buf.byteLength;
       setStatus('Parsing ' + (bytes / 1024).toFixed(0) + ' KB ...');
       const wb = XLSX.read(buf, { type: 'array' });
-      renderWorkbook(wb, { source: 'url', bytes, elapsedMs: Math.round(performance.now() - t0) });
+      renderWorkbook(wb, { source: (viaProxy ? 'proxy:' : 'url:') + url, bytes, elapsedMs: Math.round(performance.now() - t0) });
     } catch (e) {
       console.error(e);
-      setStatus('FAIL: ' + e.message + ' (có thể CORS block — xem console)', 'error');
+      setStatus('FAIL: ' + e.message + (viaProxy ? '' : ' (bật "Via proxy" để bypass CORS)'), 'error');
     }
   }
 

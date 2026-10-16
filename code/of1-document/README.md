@@ -4,13 +4,25 @@ Standalone HTML prove-of-concept cho lib viewer xlsx readonly, dùng SheetJS par
 
 ## Chạy local
 
+**Khuyến nghị — dùng `server.js`** (có CORS proxy tích hợp, Node 18+):
+
 ```bash
 cd /Users/admin/OF1/forgejo/of1-platform/of1-brain/code/of1-document
-python3 -m http.server 8765
+node server.js
 # → mở http://localhost:8765/
 ```
 
-Hoặc mở trực tiếp `index.html` qua `file://` (CORS fetch URL sẽ fail; file picker vẫn hoạt động).
+Server expose 2 endpoint:
+- `/` serve `index.html`
+- `/proxy?url=<xlsx-url>` fetch URL server-side + stream về client với header CORS `*` — bypass hoàn toàn CORS block khi BE storage chưa fix.
+
+Checkbox **"Via proxy"** trong UI (checked mặc định) → wrap URL qua `/proxy?url=...`.
+
+**Alternative — chỉ static (không proxy)**:
+```bash
+python3 -m http.server 8765
+```
+→ File picker vẫn hoạt động, "Load from URL" sẽ FAIL với URL CORS-block (uncheck "Via proxy" + chỉ dùng URL public có CORS).
 
 ## 2 cách test
 
