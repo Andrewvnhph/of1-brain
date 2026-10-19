@@ -16,8 +16,8 @@
 
 <!-- Dev fill ideas tự do ở đây. AI chạy pipeline khi TODO không có `[?]` ambiguous. -->
 
-- [ ] [overview] Chốt stack framework BE: Express/Fastify/NestJS? (FE đã chốt: React.js + TypeScript + Vite)
-- [ ] [overview] Setup repo + folder structure (monorepo pnpm workspaces hay 2 repos riêng BE+FE?)
+- [x] [overview] Chốt stack framework ✅: BE **Fastify + TS** (AI recommend) + FE **React + TS + Vite** (dev)
+- [ ] [overview] Setup repo + folder structure (monorepo pnpm workspaces hay 2 repos riêng BE+FE?) — path `/Users/admin/personal/english-app`
 - [ ] [overview,backend,web] **Book ingestion + reader + flashcard (MVP phase 1)**:
     - **Input**: tài liệu giấy scanned (ảnh/PDF nhiều trang)
     - **Pipeline**:
@@ -50,4 +50,4 @@
 
 | TODO | scope | design | openspecs | code | review | status |
 |---|---|---|---|---|---|---|
-| Book ingestion + reader + flashcard MVP | `overview,backend,web` | [`book-ingestion-mvp.md`](../../designs/english-app/book-ingestion-mvp.md) — architecture + data model + full tech stack locked (Tesseract.js / L2 overlay / Web Speech API / Free Dictionary + LibreTranslate / BullMQ) + OCR fallback research phase 2 + phased delivery (1a→1d) | — | — (chờ dev chốt framework BE + repo setup) | — | 🧠 **design done, FE React+TS+Vite chốt. Pending chỉ framework BE (Express/Fastify/NestJS) + repo path trước code** |
+| Book ingestion + reader + flashcard MVP | `overview,backend,web` | [`book-ingestion-mvp.md`](../../designs/english-app/book-ingestion-mvp.md) — architecture + data model + full tech stack locked (BE Fastify+TS, FE React+TS+Vite, Tesseract.js / L2 overlay / Web Speech API / Free Dictionary + LibreTranslate / BullMQ) + OCR fallback research phase 2 + phased delivery (1a→1d) | — | — (chờ dev confirm scaffold repo `/Users/admin/personal/english-app`) | — | 🧠 **design done, 100% decisions chốt. Ready scaffold phase 1a — chờ dev gõ "scaffold" / "start"** |

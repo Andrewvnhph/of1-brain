@@ -70,13 +70,25 @@ Khi gặp TODO chưa checked trong `brainstorms/english-app/<user>.md`:
 6. **Commit + push** → pre-commit branch check.
 7. **Cleanup** → sau dev merge PR, cleanup combo.
 
-## Pending — dev cần chốt trước khi code
+## Chốt stack (100% decisions MVP)
 
-- [ ] Framework BE: Express / Fastify / NestJS?
-- [ ] Framework web: CRA / Vite / Next.js (SSR cần không?)
-- [ ] Monorepo tool: pnpm workspaces / Turborepo / Nx?
-- [ ] State management: zustand / jotai / redux-toolkit / context?
-- [ ] Styling: Tailwind / CSS Modules / styled-components?
-- [ ] Auth: JWT self-host / Auth0 / Clerk / Supabase?
-- [ ] Repo host: GitHub personal / Forgejo khác?
-- [ ] Repo path exact: `/Users/admin/personal/english-app`?
+- ✅ BE: **Fastify + TypeScript** (AI recommend, dev delegate)
+- ✅ FE: **React.js + TypeScript + Vite** (dev chốt)
+- ✅ DB: MongoDB 7+ replicaset
+- ✅ Repo path: `/Users/admin/personal/english-app` (chưa tồn tại, mkdir khi scaffold)
+- ✅ OCR: Tesseract.js (worker thread, parallel 4) + preprocess sharp
+- ✅ Layout: L2 scan + text overlay
+- ✅ TTS: Web Speech API client-side
+- ✅ Dictionary: Free Dictionary API + LibreTranslate self-host EN→VN
+- ✅ Queue: Redis + BullMQ, realtime socket.io
+- ✅ Multi-book library + 500MB upload / Single-user / No storage limit / Mobile+desktop responsive
+
+Full MVP design: `../../designs/english-app/book-ingestion-mvp.md`.
+
+## Pending (secondary, chốt khi code — không block scaffold)
+
+- [ ] Monorepo tool: pnpm workspaces (default) / Turborepo / Nx (decide khi phase 1a start)
+- [ ] State management: zustand (recommend MVP, lightweight) / jotai / redux-toolkit / context
+- [ ] Styling: Tailwind (recommend) / CSS Modules / styled-components
+- [ ] Auth: JWT self-host (single-user MVP, có thể skip auth hoàn toàn)
+- [ ] Repo host: GitHub personal (recommend)

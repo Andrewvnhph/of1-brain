@@ -293,6 +293,23 @@ Dev yêu cầu EN-VN với **phát âm + phiên âm IPA** → cần kết hợp 
 **Chốt FE framework** (từ dev):
 - **React.js + TypeScript + Vite** — SPA client-side rendering, HMR fast, không cần SSR phase MVP.
 
+**Chốt BE framework** (AI recommend, dev delegate):
+- **Fastify + TypeScript** — Node.js framework modern:
+  - 2x faster hơn Express (benchmarks), handle upload PDF 500MB tốt hơn
+  - Native TypeScript support (type-safe route handlers + schema)
+  - Built-in JSON Schema validation (zod via `@fastify/type-provider-typebox` hoặc `@fastify/type-provider-zod`)
+  - Plugin system elegant (`fastify-plugin` encapsulation)
+  - `@fastify/multipart` cho upload (streaming parser, no buffer all)
+  - `@fastify/websocket` cho socket.io compatible layer
+  - Ít boilerplate hơn NestJS, modern hơn Express
+- Alternatives rejected:
+  - **Express**: deprecated 4.x async handling, không TS native, overused
+  - **NestJS**: overkill cho personal MVP, Angular-like DI boilerplate heavy, learning curve
+- Dev có thể revert nếu prefer tool khác, pattern code generic đủ.
+
+**Chốt repo path** (từ dev):
+- `/Users/admin/personal/english-app` — chưa tồn tại, cần `mkdir -p` + `git init` khi scaffold phase 1a.
+
 **Chốt infra trong MVP design**:
 - **File storage**: Local filesystem (phase 1 personal use) → S3/MinIO phase 2 (nếu cần cloud).
 - **Queue**: Redis + BullMQ.
@@ -363,14 +380,11 @@ Phase 1 chỉ `TesseractProvider`. Phase 2 thêm `PaddleOcrProvider` (spawn Pyth
 
 <!-- Open questions moved to section "Open questions ✅ ALL RESOLVED" ở trên. -->
 
-## Pending (framework decisions chờ dev chốt)
+## Pending ✅ ALL RESOLVED
 
-Chỉ 2 pending block scaffold phase 1a:
-- [ ] Framework BE: Express / Fastify / NestJS
-- [ ] Repo path exact: `/Users/admin/personal/english-app` (hoặc path khác dev chọn)
+Zero blockers còn lại. Dev chốt → scaffold phase 1a sẵn sàng:
+- ✅ Framework BE: **Fastify + TypeScript** (AI recommend, dev delegate)
+- ✅ Framework FE: **React.js + TypeScript + Vite** (dev chốt)
+- ✅ Repo path: `/Users/admin/personal/english-app` (chưa tồn tại, `mkdir -p` khi scaffold)
 
-**Chốt** ✅:
-- Frontend: **React.js + TypeScript + Vite** (recommend từ AI, dev delegate).
-  - Vì sao Vite: fast dev server (HMR < 500ms), modern (ESM native), không opinionated như Next.js (english-app MVP là SPA client-side rendering, không cần SSR cho SEO phase 1).
-  - Vite config: `@vitejs/plugin-react` + `vite-tsconfig-paths` + env `.env.local` cho API URL.
-  - Alternatives CRA (deprecated 2023, không dùng) / Next.js (overkill cho SPA, phase 2 nếu cần SSR landing page).
+**Framework FE detail**: Vite + `@vitejs/plugin-react` + `vite-tsconfig-paths` + env `.env.local` cho API URL.
