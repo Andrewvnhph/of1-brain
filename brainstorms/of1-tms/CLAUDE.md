@@ -119,7 +119,7 @@ Khi gặp TODO chưa checked trong `brainstorms/of1-tms/<user>.md`:
 5. **Review** → chạy tests + `/code-review`; fix CRITICAL/HIGH trước khi báo done.
 6. **Commit + push** → khi TODO done, commit scope đúng + push nhánh `ai/<slug>` (xem `../../designs/of1-tms/rules/forgejo-workflow.md`). **KHÔNG** merge, **KHÔNG** push `develop`.
 7. **Update OpenProject** → sync status work_package tương ứng + append comment progress (xem `../../designs/of1-tms/rules/openproject-workflow.md` — hiện stub, bỏ qua step này cho tới khi dev fill cấu trúc API).
-8. **Cleanup local branch** → khi start TODO mới, chạy cleanup các branch `ai/*` đã merged (xem `../../designs/of1-tms/rules/forgejo-workflow.md` §"Cleanup local branch sau khi dev merge PR"). Dùng `git branch -d` lowercase, không bao giờ `-D`.
+8. **Cleanup `ai/*` branches** (local + remote) → khi start session mới / TODO mới / sau khi dev confirm merged, chạy cleanup combo: `git fetch --prune` + `git branch -d` local merged + `git push origin --delete` remote merged. Script auto 1-liner + rule chi tiết: `../../designs/of1-tms/rules/forgejo-workflow.md` §"Cleanup `ai/*` branches sau khi dev merge PR". Dùng `-d` lowercase, không bao giờ `-D` trừ khi dev confirm squash merge trên UI.
 
 Sau mỗi TODO: check `[x]` + cập nhật Summary table với link + status + cột `module` ghi tag module đã parse.
 

@@ -116,48 +116,74 @@ git push origin ai/<slug>
 2. Update OpenProject work_package: xem `openproject-workflow.md` → add comment progress + set status.
 3. **Dừng**. Dev review branch + tạo PR / merge thủ công.
 
-## 🧹 Cleanup local branch sau khi dev merge PR
+## 🧹 Cleanup `ai/*` branches sau khi dev merge PR (HARD RULE)
 
-Khi dev đã merge `ai/<slug>` trên Forgejo UI, chạy cleanup trước khi start TODO mới để tránh accumulate junk local branches.
+**Khi nào AI tự chạy cleanup**:
+- **Bắt đầu session mới** / **start TODO mới** → scan + xoá stale `ai/*` đã merged (proactive, không chờ dev yêu cầu).
+- **Sau khi dev confirm "đã merged"** / **thấy commit mới của dev trên `develop`** → cleanup ngay.
+- **Trước khi tạo `ai/<slug>` mới** → cleanup trước để tránh conflict tên.
 
-### Pattern an toàn (chỉ xoá merged branch)
+### Pattern an toàn (local + remote cho `ai/*` prefix, 1 lệnh combo)
 
 ```bash
-cd <path-to-of1-tms>
+cd <path-to-repo>  # of1-tms, of1-document, ...
 
 # 1. Fetch + prune remote tracking refs đã bị xoá trên remote
 git fetch --prune
 
-# 2. Switch sang develop để check merged state
+# 2. Switch sang develop (nếu đang trên ai/* branch, phải rời trước khi delete)
 git checkout develop
 git pull origin develop
 
-# 3. List các ai/* đã merged (safe scan)
+# 3. List các ai/* local đã merged
+echo '--- Local ai/* merged, sẽ xoá:'
 git branch --merged origin/develop | grep '^  ai/'
 
-# 4. Xoá từng branch merged (git -d check lại, từ chối xoá nếu chưa merge)
+# 4. Xoá local merged branches (git -d check safe, từ chối chưa-merge)
 for b in $(git branch --merged origin/develop | grep '^  ai/' | sed 's/^  //'); do
+  echo "deleting local $b"
   git branch -d "$b"
 done
 
-# 5. (Optional) Quay về feature branch đang work tiếp theo
-git checkout ai/<next-slug>
+# 5. List + xoá remote ai/* đã merged (Forgejo không auto delete source branch
+#    nếu dev không tick "Delete source branch after merge" trên UI)
+echo '--- Remote ai/* merged, sẽ xoá:'
+git for-each-ref --merged origin/develop --format='%(refname:short)' refs/remotes/origin/ai/ | sed 's|^origin/||'
+for b in $(git for-each-ref --merged origin/develop --format='%(refname:short)' refs/remotes/origin/ai/ | sed 's|^origin/||'); do
+  echo "deleting remote $b"
+  git push origin --delete "$b"
+done
+
+# 6. (Optional) Switch sang feature branch tiếp theo
+# git checkout ai/<next-slug>
 ```
 
 ### Rule vàng
 
 - **Dùng `-d` lowercase**: git từ chối xoá branch chưa merged → an toàn, không mất code.
 - **TUYỆT ĐỐI tránh `-D` capital**: force xoá cả branch chưa merged → mất commit nếu chưa push remote.
-- **Không xoá branch đang checkout**: git tự block (lỗi "cannot delete branch currently checked out").
-- **Chỉ xoá `ai/*` prefix**: không đụng branch của dev khác (`chien`, `nhat`, `document`...).
+- **Không xoá branch đang checkout**: git tự block (lỗi "cannot delete branch currently checked out"). Phải `git checkout develop` trước.
+- **Chỉ xoá `ai/*` prefix**: không đụng branch của dev khác (`chien`, `nhat`, `document`, `crm`, `release/*`...).
+- **Remote cleanup bắt buộc**: Forgejo không auto delete source branch nếu dev quên tick checkbox UI. Local cleanup mà không remote cleanup → stale branch remote tích tụ, confusing khi list PR.
 
-### Nếu `-d` từ chối vì "not fully merged"
+### Nếu `-d` / `--merged` từ chối vì "not fully merged" / không list ra
 
 Nghĩa là branch có commit chưa vào `develop`. 2 khả năng:
 1. PR chưa thực sự merged → check Forgejo UI, nếu merged thì `git fetch --prune` lại rồi retry.
-2. Dev merged bằng squash commit → `-d` không nhận ra; dùng `git branch -D` **chỉ khi** đã xác nhận PR đã merge trên UI.
+2. Dev merged bằng **squash commit** → git không nhận ra ancestry → `--merged origin/develop` không list ra. Workaround: check Forgejo UI → nếu đã merged, dùng `git branch -D <branch>` + `git push origin --delete <branch>` **chỉ khi** đã xác nhận PR đã merged.
 
 Khi nghi ngờ: dừng, báo dev. Branch local không gây hại (chỉ chiếm ref), xoá sau cũng được.
+
+### AI script auto-cleanup khi start session
+
+Prepend vào mỗi session TODO mới cho `of1-tms` / `of1-document`:
+```bash
+cd <repo> && git fetch --prune && git checkout develop && git pull --ff-only origin develop \
+  && for b in $(git branch --merged origin/develop | grep '^  ai/' | sed 's/^  //'); do git branch -d "$b"; done \
+  && for b in $(git for-each-ref --merged origin/develop --format='%(refname:short)' refs/remotes/origin/ai/ | sed 's|^origin/||'); do git push origin --delete "$b"; done \
+  && echo 'Cleanup ai/* done'
+```
+Fail-safe: nếu chain fail (vd `pull` conflict), stop, báo dev; không continue.
 
 ## Auth
 
