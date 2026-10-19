@@ -17,7 +17,7 @@
 <!-- Dev fill ideas tự do ở đây. AI chạy pipeline khi TODO không có `[?]` ambiguous. -->
 
 - [x] [overview] Chốt stack framework ✅: BE **Fastify + TS** (AI recommend) + FE **React + TS + Vite** (dev)
-- [ ] [overview] Setup repo + folder structure (monorepo pnpm workspaces hay 2 repos riêng BE+FE?) — path `/Users/admin/personal/english-app`
+- [x] [overview] Setup repo + folder structure ✅ pnpm workspaces · `/Users/admin/personal/english-app` · commit `f505b5e`
 - [ ] [overview,backend,web] **Book ingestion + reader + flashcard (MVP phase 1)**:
     - **Input**: tài liệu giấy scanned (ảnh/PDF nhiều trang)
     - **Pipeline**:
@@ -50,4 +50,4 @@
 
 | TODO | scope | design | openspecs | code | review | status |
 |---|---|---|---|---|---|---|
-| Book ingestion + reader + flashcard MVP | `overview,backend,web` | [`book-ingestion-mvp.md`](../../designs/english-app/book-ingestion-mvp.md) — architecture + data model + full tech stack locked (BE Fastify+TS, FE React+TS+Vite, Tesseract.js / L2 overlay / Web Speech API / Free Dictionary + LibreTranslate / BullMQ) + OCR fallback research phase 2 + phased delivery (1a→1d) | — | — (chờ dev confirm scaffold repo `/Users/admin/personal/english-app`) | — | 🧠 **design done, 100% decisions chốt. Ready scaffold phase 1a — chờ dev gõ "scaffold" / "start"** |
+| Book ingestion + reader + flashcard MVP | `overview,backend,web` | [`book-ingestion-mvp.md`](../../designs/english-app/book-ingestion-mvp.md) — architecture + data model + full tech stack locked (BE Fastify+TS, FE React+TS+Vite, Tesseract.js / L2 overlay / Web Speech API / Free Dictionary + LibreTranslate / BullMQ) + OCR fallback research phase 2 + phased delivery (1a→1d) | — | **Phase 1a scaffold done** · repo `/Users/admin/personal/english-app` · commit `f505b5e` · 19 files · pnpm workspaces + apps/backend (Fastify + Mongoose + BullMQ + Tesseract.js + socket.io) + docker-compose (Mongo 7 replicaset + Redis + LibreTranslate) · test flow curl in README | — | ⏳ **Scaffold 1a done, chờ dev test manual + chốt scope phase 1b (reader web)** |
