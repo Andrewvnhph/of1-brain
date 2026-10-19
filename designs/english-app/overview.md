@@ -8,34 +8,33 @@ Phần mềm học tiếng Anh. Project cá nhân của mchien.
 |---|---|---|
 | Backend | **Node.js** (TBD: Express / Fastify / NestJS) | TypeScript, Node 20 LTS |
 | Database | **MongoDB** (>= 7.0 replicaset) | Transactions support |
-| Frontend web | **React.js** (TBD: CRA / Vite / Next.js) | SPA hoặc SSR tùy need SEO |
-| Frontend mobile | **React Native** (TBD: Expo / bare) | iOS + Android |
-| Shared | Types + utils + validation schemas | Giữa BE, web, mobile |
-| Monorepo | pnpm workspaces (default) / Turborepo (?) | TBD |
+| Frontend | **React.js** (TBD: CRA / Vite / Next.js) | SPA hoặc SSR tùy need SEO; mobile responsive, option PWA |
+| Shared | Types + utils + validation schemas (zod) | Giữa BE và FE |
+| Monorepo | pnpm workspaces (default) / Turborepo (?) | TBD, nếu tách BE/FE/shared |
 
 **Khác hẳn OF1 stack** (Spring Boot + PostgreSQL + Class Components) → độc lập repo + rules.
 
 ## Architecture dự kiến
 
 ```
-┌────────────────────┐  ┌────────────────────┐
-│  Web (React.js)    │  │  Mobile (RN)       │
-└──────────┬─────────┘  └──────────┬─────────┘
-           │                       │
-           └─────────┬─────────────┘
-                     ↓
-         ┌───────────────────────┐
-         │  BE API (Node.js)     │
-         │  + Auth               │
-         │  + Business logic     │
-         │  + Spaced repetition  │
-         └───────────┬───────────┘
-                     ↓
-         ┌───────────────────────┐
-         │  MongoDB              │
-         │  users / cards /      │
-         │  reviews / vocab / ... │
-         └───────────────────────┘
+┌──────────────────────────────┐
+│  Web (React.js — SPA / SSR)  │
+│  responsive mobile + PWA     │
+└───────────────┬──────────────┘
+                │ REST / tRPC
+                ↓
+    ┌───────────────────────┐
+    │  BE API (Node.js)     │
+    │  + Auth               │
+    │  + Business logic     │
+    │  + Spaced repetition  │
+    └───────────┬───────────┘
+                ↓
+    ┌───────────────────────┐
+    │  MongoDB              │
+    │  users / cards /      │
+    │  reviews / vocab / ... │
+    └───────────────────────┘
 ```
 
 ## Features (phase 1 — TBD, dev fill)
@@ -59,8 +58,7 @@ Khả năng cân nhắc:
 english-app/
 ├── apps/
 │   ├── backend/        — Node.js API
-│   ├── web/            — React.js web client
-│   └── mobile/         — React Native app
+│   └── web/            — React.js web client (mobile responsive)
 ├── packages/
 │   ├── shared/         — Types + utils + validation (zod schemas)
 │   └── config/         — ESLint, TS config, Prettier shared
@@ -68,6 +66,15 @@ english-app/
 ├── package.json
 └── README.md
 ```
+
+**Simpler alternative** (nếu không cần shared types đáng kể):
+```
+english-app/
+├── backend/            — Node.js API
+├── web/                — React.js web client
+└── README.md
+```
+2 package.json độc lập, không monorepo. Zod schema duplicate hoặc gen từ OpenAPI/tRPC.
 
 ## Nguồn tham chiếu
 
@@ -77,10 +84,11 @@ english-app/
 
 ## Pending decisions
 
-- [ ] Chốt framework BE
-- [ ] Chốt framework web (SSR cần không?)
-- [ ] Chốt Expo vs bare RN
-- [ ] Chốt monorepo tool
+- [ ] Chốt framework BE (Express / Fastify / NestJS)
+- [ ] Chốt framework web (CRA / Vite / Next.js — SSR cần không?)
+- [ ] Chốt monorepo (pnpm workspaces / 2 repos riêng BE+FE)
+- [ ] Chốt API protocol (REST / tRPC / GraphQL)
 - [ ] Chốt auth strategy (JWT self-host / Auth0 / Clerk / Supabase)
+- [ ] Chốt styling (Tailwind / CSS Modules / styled-components)
 - [ ] Chốt scope MVP features phase 1
 - [ ] Setup repo + initial scaffold

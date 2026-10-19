@@ -19,8 +19,8 @@ Phần mềm học tiếng Anh (personal project of mchien).
 
 ## Cross-cutting constraints
 
-- **TypeScript strict** everywhere (BE / web / mobile / shared).
+- **TypeScript strict** everywhere (BE / web / shared).
 - **Shared validation schemas** (zod) giữa BE và FE (type + runtime check đồng nhất).
-- **Offline-first** cho mobile (local MongoDB Realm / SQLite cache?) — review phase sau khi scope rõ.
 - **Spaced repetition algorithm**: SM-2 (SuperMemo) baseline, có thể upgrade FSRS sau.
 - **i18n**: khả năng UI bilingual (Vietnamese + English learner-facing) từ đầu để không retrofit sau.
+- **Mobile responsive**: web layout mobile-first; option PWA (installable, offline cache qua service worker) nếu dev muốn user cài đặt home screen.

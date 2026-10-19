@@ -10,17 +10,16 @@
 **Stack**:
 - **Backend**: Node.js (TBD framework: Express / Fastify / NestJS)
 - **Database**: MongoDB
-- **Frontend web**: React.js (TBD: CRA / Vite / Next.js)
-- **Frontend mobile**: React Native (TBD: bare / Expo)
-- **Monorepo?**: TBD (pnpm workspaces / Turborepo / Nx?)
+- **Frontend**: React.js (TBD: CRA / Vite / Next.js). Mobile responsive qua web (PWA option sau).
+- **Monorepo?**: TBD (pnpm workspaces / Turborepo / Nx?) — nếu tách BE / FE / shared.
 
 **Khác hẳn stack of1-tms/of1-document** (Spring Boot + PostgreSQL + Class Components) → KHÔNG reuse rules TMS, cần rule set riêng (sẽ fill khi dev chốt framework + convention).
 
 ## Cấu trúc file trong thư mục này (per-user)
 
 - Brainstorm per-user: `<user>.md` (vd `mchien.md`). TODO ghi với tag scope.
-- Scope ∈ `{backend, web, mobile, mongo, shared, infra, overview}`.
-- Nhiều scope → `[backend,mongo]` hoặc `[web,mobile]`.
+- Scope ∈ `{backend, web, mongo, shared, infra, overview}`.
+- Nhiều scope → `[backend,mongo]` hoặc `[web,shared]`.
 
 ## ⚠️ HARD SAFETY RULE — Repo scope
 
@@ -34,7 +33,7 @@
 
 **Khác TMS/document**:
 - Có thể dùng GitHub thay Forgejo (nếu dev host personal repo trên GitHub) → auth qua SSH key cá nhân, không phải Forgejo token.
-- Nếu monorepo → path trong repo (vd `apps/backend`, `apps/web`, `apps/mobile`) phải tag rõ khi commit scope.
+- Nếu monorepo → path trong repo (vd `apps/backend`, `apps/web`, `packages/shared`) phải tag rõ khi commit scope.
 
 ## Rules bắt buộc (load trước — 2 layer)
 
@@ -42,17 +41,16 @@
 - **Git workflow**: `../../designs/rules/forgejo-workflow.md` — áp cho mọi project (Forgejo và GitHub có pattern tương tự).
 
 **Layer 2 — English-app rules** (`../../designs/english-app/rules/`):
-- Hiện trạng: **chưa có file** — dev chốt framework trước (Express vs Fastify vs NestJS, Vite vs Next.js, Expo vs bare RN), AI sẽ gen rule phù hợp.
+- Hiện trạng: **chưa có file** — dev chốt framework trước (Express vs Fastify vs NestJS, Vite vs Next.js), AI sẽ gen rule phù hợp.
 - Dự kiến các file sau khi stack rõ:
   - `backend.md` — Node convention (TS strict? async/await patterns? error handling? Mongoose vs native driver?)
-  - `web.md` — React.js convention (functional vs class? hooks? state management: zustand/redux/context?)
-  - `mobile.md` — React Native convention (Expo vs bare? navigation: react-navigation? state sync web-mobile?)
+  - `web.md` — React.js convention (functional vs class? hooks? state management: zustand/redux/context? styling: Tailwind / CSS Modules?)
   - `mongo.md` — schema conventions, indexing, aggregation patterns
-  - `monorepo.md` — nếu dùng workspaces (shared types/utils between web + mobile)
+  - `monorepo.md` — nếu dùng workspaces (shared types/utils between BE + web)
 
 ## Convention tạm thời (chờ dev chốt)
 
-- **Language**: TypeScript cho tất cả (BE + web + mobile) — khuyến nghị cho type sharing.
+- **Language**: TypeScript cho tất cả (BE + web + shared) — khuyến nghị cho type sharing.
 - **Package manager**: pnpm (consistent với OF1 workspace).
 - **Node version**: >= 20 LTS.
 - **MongoDB**: >= 7.0 với replicaset (hỗ trợ transactions).
@@ -76,9 +74,9 @@ Khi gặp TODO chưa checked trong `brainstorms/english-app/<user>.md`:
 
 - [ ] Framework BE: Express / Fastify / NestJS?
 - [ ] Framework web: CRA / Vite / Next.js (SSR cần không?)
-- [ ] Mobile: Expo (nhanh) hay bare RN (control)?
 - [ ] Monorepo tool: pnpm workspaces / Turborepo / Nx?
-- [ ] State management shared: zustand / jotai / redux-toolkit?
+- [ ] State management: zustand / jotai / redux-toolkit / context?
+- [ ] Styling: Tailwind / CSS Modules / styled-components?
 - [ ] Auth: JWT self-host / Auth0 / Clerk / Supabase?
 - [ ] Repo host: GitHub personal / Forgejo khác?
 - [ ] Repo path exact: `/Users/admin/personal/english-app`?

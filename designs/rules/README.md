@@ -49,7 +49,7 @@ designs/
 
 - **of1-tms**: `../of1-tms/rules/{backend,frontend}.md` + `../of1-tms/rules/openproject-workflow.md`
 - **of1-document**: **reuse of1-tms rules trực tiếp** (same stack Spring Boot + React). Mapping naming trong `../of1-document/rules/README.md`.
-- **english-app** (personal project): **diverges hoàn toàn** (Node.js + MongoDB + React/RN) → chờ dev chốt framework, AI gen rules riêng trong `../english-app/rules/*.md`.
+- **english-app** (personal project): **diverges hoàn toàn** (Node.js + MongoDB + React.js) → chờ dev chốt framework, AI gen rules riêng trong `../english-app/rules/*.md`.
 
 ## Pattern reuse giữa projects
 
