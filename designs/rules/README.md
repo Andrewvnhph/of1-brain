@@ -48,4 +48,18 @@ designs/
 ## Reference project rules hiện tại
 
 - **of1-tms**: `../of1-tms/rules/{backend,frontend}.md` + `../of1-tms/rules/openproject-workflow.md`
-- **of1-document**: chưa có rule riêng (phase 1), tham chiếu TMS rules
+- **of1-document**: **reuse of1-tms rules trực tiếp** (same stack). Mapping naming trong `../of1-document/rules/README.md`. Chưa có file override — khi diverge sẽ tạo `of1-document/rules/<topic>.md`.
+
+## Pattern reuse giữa projects
+
+Khi 2 projects same stack (vd TMS + Document đều Spring Boot + React), có 2 cách tổ chức:
+
+**(A) Project B reuse project A rules** (hiện tại):
+- Pros: zero duplicate, dễ sync; project B chỉ cần CLAUDE.md trỏ sang A's rules + readme mapping naming.
+- Cons: project B rely vào A có rule đúng; khi A refactor rule, B phải follow.
+
+**(B) Promote rules lên shared `designs/rules/`** (phase sau):
+- Pros: ownership rõ (shared ≠ project A); cả 2 ngang hàng.
+- Cons: content TMS-specific (TMSDAOService, BBRefTMS*) phải rename sang generic hoặc split thành 2 files (shared base + project overrides).
+
+Hiện tại dùng (A) vì phase bootstrap, chuyển sang (B) khi có project thứ 3 (vd of1-crm) dùng same rules → promote lúc đó justified.

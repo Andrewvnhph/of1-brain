@@ -33,18 +33,21 @@ Giống `brainstorms/of1-tms/CLAUDE.md`:
 
 ## Rules bắt buộc (load trước — 2 layer)
 
-Load theo thứ tự: **shared** rồi **project-specific**. Project-specific override shared khi conflict.
+**Of1-document dùng chung rules với of1-tms** (same stack Spring Boot + React + Module Federation). Load theo thứ tự: shared rồi project reuse TMS. Project override chỉ cho pattern đặc thù.
 
 **Layer 1 — Shared rules** (`../../designs/rules/`):
 - **Git (Forgejo)**: `../../designs/rules/forgejo-workflow.md` — git workflow áp cho mọi project.
 
-**Layer 2 — Of1-document rules** (`../../designs/of1-document/rules/`):
-- Hiện trạng (phase 1): **chưa có rule riêng** → tham chiếu TMS rules sau đây:
-  - `../../designs/of1-tms/rules/backend.md` — Spring/JPA (nếu BE document cùng stack)
-  - `../../designs/of1-tms/rules/frontend.md` — React class components, bs.BB*, scroll viewer, notification 3 cấp
-- Khi document có pattern đặc thù → tạo `../../designs/of1-document/rules/<file>.md` + note "**Diverges from of1-tms**: ..." để track lineage.
+**Layer 2 — Of1-tms rules reused** (`../../designs/of1-tms/rules/`):
+- **Backend**: `../../designs/of1-tms/rules/backend.md` — Spring/JPA/DDD. Khi đọc: replace `TMSDAOService` / `tmsTransactionManager` / `TMSBill` prefix → entity + bean name tương đương của document (vd `DocumentDAOService` / `documentTransactionManager` / `Document`).
+- **Frontend**: `../../designs/of1-tms/rules/frontend.md` — React class components, bs.BB*, scroll viewer, notification 3 cấp, bs.Button convention.
+
+**Layer 3 — Of1-document overrides** (`../../designs/of1-document/rules/`):
+- Hiện trạng: **chưa có file override**, chỉ có `README.md` giải thích convention reuse.
+- Khi document có pattern đặc thù (vd viewer stack, S3 proxy) → tạo file `<topic>.md` với header "**Diverges from of1-tms**: ...".
 
 > **Convention 2-layer**: `../../designs/rules/README.md` — khi nào promote rule shared vs giữ project-specific.
+> **Reuse pattern**: `../../designs/of1-document/rules/README.md` — mapping naming TMS → document.
 
 ## Convention đặc biệt cho of1-document
 
