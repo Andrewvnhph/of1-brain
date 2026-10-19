@@ -31,14 +31,20 @@ Giống `brainstorms/of1-tms/CLAUDE.md`:
 
 **Pre-commit safety**: luôn `git branch --show-current | grep -qE '^ai/'` fail-fast trước commit.
 
-## Rules bắt buộc (load trước)
+## Rules bắt buộc (load trước — 2 layer)
 
-Document project chưa có rule riêng → tham chiếu rule của `of1-tms`:
-- `../../designs/of1-tms/rules/backend.md` — convention Spring/JPA giống TMS
-- `../../designs/of1-tms/rules/frontend.md` — React class components, Module Federation, notification, scroll viewer pattern
-- `../../designs/of1-tms/rules/forgejo-workflow.md` — commit scope, branch `ai/<slug>`, cleanup, pre-commit check
+Load theo thứ tự: **shared** rồi **project-specific**. Project-specific override shared khi conflict.
 
-Nếu có pattern riêng chỉ áp cho document → tạo `../../designs/of1-document/rules/*.md` sau.
+**Layer 1 — Shared rules** (`../../designs/rules/`):
+- **Git (Forgejo)**: `../../designs/rules/forgejo-workflow.md` — git workflow áp cho mọi project.
+
+**Layer 2 — Of1-document rules** (`../../designs/of1-document/rules/`):
+- Hiện trạng (phase 1): **chưa có rule riêng** → tham chiếu TMS rules sau đây:
+  - `../../designs/of1-tms/rules/backend.md` — Spring/JPA (nếu BE document cùng stack)
+  - `../../designs/of1-tms/rules/frontend.md` — React class components, bs.BB*, scroll viewer, notification 3 cấp
+- Khi document có pattern đặc thù → tạo `../../designs/of1-document/rules/<file>.md` + note "**Diverges from of1-tms**: ..." để track lineage.
+
+> **Convention 2-layer**: `../../designs/rules/README.md` — khi nào promote rule shared vs giữ project-specific.
 
 ## Convention đặc biệt cho of1-document
 
@@ -62,4 +68,4 @@ Khi gặp TODO chưa checked trong `brainstorms/of1-document/<user>.md`:
 4. **Code** → nhánh `ai/<slug>` off develop
 5. **Review** → tests + manual verify
 6. **Commit + push** → tuân thủ pre-commit check (verify branch `ai/*`)
-7. **Cleanup** → sau dev merge PR, chạy cleanup combo (xem `../../designs/of1-tms/rules/forgejo-workflow.md` §Cleanup)
+7. **Cleanup** → sau dev merge PR, chạy cleanup combo (xem `../../designs/rules/forgejo-workflow.md` §Cleanup)

@@ -1,13 +1,15 @@
 <!--
-  DIVERGED từ: /Users/admin/OF1/forgejo/of1-platform/of1-tms-engineering-hub/rules/forgejo-workflow.md
-  Last synced: 2026-10-13.
-  SCOPE ĐÃ THU HẸP: file này giờ chỉ cover **git workflow** (commit/push/branch).
-  Issue/task tracking đã chuyển sang `openproject-workflow.md` (OpenProject thay Forgejo issue).
+  SHARED RULE — áp cho mọi project (of1-tms, of1-document, future of1-crm, ...).
+  Xem `./README.md` cho convention 2-layer (shared + project-specific).
+
+  Repo paths + WRITABLE scope list cụ thể ghi trong CLAUDE.md của mỗi project:
+    - of1-tms: brainstorms/of1-tms/CLAUDE.md
+    - of1-document: brainstorms/of1-document/CLAUDE.md
 -->
 
 # Forgejo Git Workflow
 
-Thao tác git với Forgejo (`git.datatp.cloud`) — chỉ repo `of1-tms/of1-tms` (writable). 3 repo khác (`of1-platform`, `of1-core`, `of1-webui`) là read-only, không commit (xem HARD SAFETY RULE trong `brainstorms/of1-tms/CLAUDE.md`).
+Thao tác git với Forgejo (`git.datatp.cloud`) cho các repo WRITABLE của OF1. HARD SAFETY RULE repo scope (writable vs read-only) ghi trong CLAUDE.md tương ứng mỗi project — luôn verify branch `ai/<slug>` trước commit, KHÔNG push `develop`/`main`.
 
 ## ⚠️ Hard Rule — No Confirmation
 

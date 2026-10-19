@@ -8,7 +8,7 @@
 - **Brainstorm tổ chức theo user**, không theo module. Mỗi dev có 1 file: `<user>.md` (vd `mchien.md`).
 - TODO trong mỗi file **phải tag module** để AI load đúng grounding: `- [ ] [<module>] <nội dung>`.
 - Module info nằm ở `../../designs/of1-tms/<module>.md` + `../../openspec/specs/of1-tms/<module>/spec.md` (không phải trong brainstorms).
-- Match pattern Forgejo "group by assignee" (xem rule `../../designs/of1-tms/rules/forgejo-workflow.md`).
+- Match pattern Forgejo "group by assignee" (xem rule `../../designs/rules/forgejo-workflow.md`).
 
 ## ⚠️ HARD SAFETY RULE — Repo scope (write vs read-only)
 
@@ -31,17 +31,21 @@ AI tuyệt đối tuân thủ scope này khi làm việc với code thật:
 
 **Nếu AI vô ý edit file trong 3 repo read-only** → **DỪNG NGAY, báo dev** để revert. Đây là vi phạm hard rule.
 
-**Trước MỖI `git commit`**: PHẢI chạy `git branch --show-current` và verify output ≠ `develop` / `main` / `master` / `release`. Branch state local **không stable** qua các turn (dev merge PR + pull có thể fast-forward branch `ai/<slug>` về `develop`). Chi tiết + recovery procedure: `../../designs/of1-tms/rules/forgejo-workflow.md` §"Pre-commit safety check".
+**Trước MỖI `git commit`**: PHẢI chạy `git branch --show-current` và verify output ≠ `develop` / `main` / `master` / `release`. Branch state local **không stable** qua các turn (dev merge PR + pull có thể fast-forward branch `ai/<slug>` về `develop`). Chi tiết + recovery procedure: `../../designs/rules/forgejo-workflow.md` §"Pre-commit safety check".
 
-## Rules bắt buộc (load trước)
+## Rules bắt buộc (load trước — 2 layer)
 
-AI PHẢI đọc 4 file rule sau trước khi gen code/design TMS:
+Load theo thứ tự: **shared** rồi **project-specific**. Project-specific override shared khi conflict.
 
+**Layer 1 — Shared rules** (`../../designs/rules/`):
+- **Git (Forgejo)**: `../../designs/rules/forgejo-workflow.md` — commit scope/message, branch `ai/<slug>`, pre-commit safety, cleanup, PR. Áp cho mọi project OF1.
+
+**Layer 2 — TMS-specific rules** (`../../designs/of1-tms/rules/`):
 - **Backend**: `../../designs/of1-tms/rules/backend.md` — Service → Logic → Repo, save pattern, DDD Aggregate, Kafka, Testing, Env.
-- **Frontend**: `../../designs/of1-tms/rules/frontend.md` — React 18 Class Components, Module Federation, bs.BB* inputs, BBRef từ of1-tms, shell app registration (§5.7).
-- **Git (Forgejo)**: `../../designs/of1-tms/rules/forgejo-workflow.md` — commit scope/message, branch `ai/<slug>`, push rules (chỉ `of1-tms` writable).
+- **Frontend**: `../../designs/of1-tms/rules/frontend.md` — React 18 Class Components, Module Federation, bs.BB* inputs, BBRef TMS, shell app registration (§5.7).
 - **Task tracking (OpenProject)**: `../../designs/of1-tms/rules/openproject-workflow.md` — tạo work_package trên `insight.openfreightone.com/projects/TMS`. **Hiện đang STUB** chờ dev fill cấu trúc API.
 
+> **Convention 2-layer**: `../../designs/rules/README.md` — khi nào promote rule shared vs giữ project-specific.
 > **Nguồn gốc rules**: `/Users/admin/OF1/forgejo/of1-platform/of1-tms-engineering-hub/rules/`. Bản tại `designs/of1-tms/rules/` là MIRROR; khi engineering-hub cập nhật cần re-sync.
 
 ## Overview grounding (đọc trước mỗi TODO)
@@ -117,9 +121,9 @@ Khi gặp TODO chưa checked trong `brainstorms/of1-tms/<user>.md`:
    - Cần modify **`of1-platform` / `of1-core` / `of1-webui` (read-only)**: **KHÔNG tự sửa**. Ghi finding vào design để dev xử lý thủ công.
    - Pipeline hiện tại chưa chốt (xem TODO 1 trong `brainstorms/setup.md`) → nếu TODO động vào code thật lần đầu, STOP ask dev confirm scope.
 5. **Review** → chạy tests + `/code-review`; fix CRITICAL/HIGH trước khi báo done.
-6. **Commit + push** → khi TODO done, commit scope đúng + push nhánh `ai/<slug>` (xem `../../designs/of1-tms/rules/forgejo-workflow.md`). **KHÔNG** merge, **KHÔNG** push `develop`.
+6. **Commit + push** → khi TODO done, commit scope đúng + push nhánh `ai/<slug>` (xem `../../designs/rules/forgejo-workflow.md`). **KHÔNG** merge, **KHÔNG** push `develop`.
 7. **Update OpenProject** → sync status work_package tương ứng + append comment progress (xem `../../designs/of1-tms/rules/openproject-workflow.md` — hiện stub, bỏ qua step này cho tới khi dev fill cấu trúc API).
-8. **Cleanup `ai/*` branches** (local + remote) → khi start session mới / TODO mới / sau khi dev confirm merged, chạy cleanup combo: `git fetch --prune` + `git branch -d` local merged + `git push origin --delete` remote merged. Script auto 1-liner + rule chi tiết: `../../designs/of1-tms/rules/forgejo-workflow.md` §"Cleanup `ai/*` branches sau khi dev merge PR". Dùng `-d` lowercase, không bao giờ `-D` trừ khi dev confirm squash merge trên UI.
+8. **Cleanup `ai/*` branches** (local + remote) → khi start session mới / TODO mới / sau khi dev confirm merged, chạy cleanup combo: `git fetch --prune` + `git branch -d` local merged + `git push origin --delete` remote merged. Script auto 1-liner + rule chi tiết: `../../designs/rules/forgejo-workflow.md` §"Cleanup `ai/*` branches sau khi dev merge PR". Dùng `-d` lowercase, không bao giờ `-D` trừ khi dev confirm squash merge trên UI.
 
 Sau mỗi TODO: check `[x]` + cập nhật Summary table với link + status + cột `module` ghi tag module đã parse.
 
