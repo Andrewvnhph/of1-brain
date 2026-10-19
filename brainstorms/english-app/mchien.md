@@ -30,14 +30,15 @@
       - Paginated reader (như Google Books) — hiển thị original scan + overlay text selectable
       - Click/select từ → popup phát âm (TTS) + definition + nút "Add to flashcard deck"
       - Flashcard deck list → SRS review (SM-2)
-    - **Pending decisions**:
-      - [ ] OCR engine: Tesseract.js (free, run BE) / Google Vision API / Azure Computer Vision / AWS Textract (paid, better accuracy)
-      - [ ] Layout fidelity: text-only (markdown-like) vs structured JSON với bbox + font estimate vs PDF overlay (text layer invisible behind scan image)
-      - [ ] TTS: Web Speech API browser native (free, voice chất lượng tùy OS) / ElevenLabs / Google Cloud TTS / Azure Neural TTS
-      - [ ] Dictionary API: Free Dictionary API (free, basic) / Merriam-Webster (free tier limited) / Oxford Dictionaries (paid)
-      - [ ] Multi-book MVP vs 1-book-at-a-time
-      - [ ] Upload size limit: trang → sách 300 trang 500MB PDF?
-      - [ ] Processing async qua queue (BullMQ + Redis?) hay sync với progress stream
+    - **Chốt** ✅:
+      - OCR: **Tesseract.js** self-host (free, BE worker thread, parallel 4)
+      - Layout: **L2 scan + text overlay** (bbox normalized 0-1, PDF-like)
+      - TTS: **Web Speech API** client-side (zero cost, offline)
+    - **Pending** (chờ dev chốt tiếp):
+      - [ ] Dictionary API: Free Dictionary API / Merriam-Webster / Oxford
+      - [ ] Multi-book MVP vs 1-book-at-a-time (ảnh hưởng UI book list)
+      - [ ] Upload size limit (sách 300 trang → ~500MB PDF?)
+      - [ ] Processing: async queue BullMQ+Redis (recommend) hay sync với SSE progress
 
 ## Summary (AI)
 <!-- AI điền ngay dưới TODO sau khi chạy pipeline. Dev không sửa tay. -->

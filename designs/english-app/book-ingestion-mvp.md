@@ -144,54 +144,88 @@ Chuyển sách tiếng Anh giấy (scanned) thành phiên bản web interactive:
 
 ## Key technical decisions
 
-### OCR engine lựa chọn
+### OCR engine ✅ CHỐT: Tesseract.js self-host
 
 | Engine | Free | Accuracy English | Layout | Note |
 |---|---|---|---|---|
-| **Tesseract.js** (self-host) | ✅ | 85-90% in sách printed clear | Weak (chỉ text + basic bbox) | Node native, run worker thread, chậm nhưng free |
-| Google Vision API | $1.5/1000 pages | 95%+ | Tốt (document detection endpoint cho structured) | Paid, cần GCP account |
-| Azure Computer Vision Read | $1/1000 pages | 95%+ | Tốt | Paid, cần Azure |
-| AWS Textract | $1.5/1000 pages | 95%+ | Rất tốt cho tables/forms | Overkill cho sách |
+| **✅ Tesseract.js** (self-host) | ✅ | 85-90% in sách printed clear | Weak (chỉ text + basic bbox) | Node native, run worker thread, chậm nhưng free. **MVP CHỐT.** |
+| Google Vision API | $1.5/1000 pages | 95%+ | Tốt (document detection endpoint cho structured) | Phase 2 upgrade khi accuracy không đủ |
+| Azure Computer Vision Read | $1/1000 pages | 95%+ | Tốt | — |
+| AWS Textract | $1.5/1000 pages | 95%+ | Rất tốt cho tables/forms | Overkill |
 
-**Khuyến nghị MVP**: Tesseract.js self-host trước (free, control). Nếu accuracy không đủ → swap sang Google Vision (change provider mỗi engine). Code behind interface:
+Code behind interface để swap sau nếu cần:
 ```typescript
 interface OcrProvider {
   recognize(imageBuf: Buffer): Promise<PageOcrResult>;
 }
-class TesseractProvider implements OcrProvider { ... }
-class GoogleVisionProvider implements OcrProvider { ... }
+class TesseractProvider implements OcrProvider { ... }  // phase 1
+// class GoogleVisionProvider — phase 2 nếu dev feedback accuracy không đủ
 ```
 
-### Layout fidelity level
+**Tesseract config khuyến nghị cho sách English**:
+- `lang: 'eng'`, optionally `+vie` nếu sách có từ vựng Việt chú thích
+- `tessedit_pageseg_mode: 1` (auto segmentation with OSD) — tốt cho sách multi-paragraph
+- Preprocess với `sharp`: grayscale + normalize + rotate nếu lệch (OSD detect)
+- Worker thread parallelism: 4 pages concurrent trên máy dev 8-core
 
-**3 options**:
-- **(L1) Text-only**: concat text từng paragraph, bỏ layout → viewer render markdown-like. Đơn giản nhất, nhưng mất feel sách gốc.
-- **(L2) Scan + text overlay** ⭐ **MVP khuyến nghị**: hiển thị ảnh scan làm background + text layer transparent position theo bbox từ OCR → user vẫn thấy sách như scan nhưng select được text. Pattern giống PDF có text layer.
-- **(L3) Reconstruct HTML**: parse text blocks → render HTML tương đương (font estimate, column detect, image anchor). Fidelity cao nhưng OCR structured output cần (Google Vision document detect) + logic phức tạp.
+### Layout fidelity level ✅ CHỐT: L2 scan + text overlay
 
-**Phase 1**: L2. Reader component:
+- (L1) Text-only — không chọn.
+- **✅ (L2) Scan + text overlay** — hiển thị ảnh scan làm background + text layer transparent position theo bbox từ OCR → user vẫn thấy sách như scan nhưng select được text. Pattern giống PDF có text layer.
+- (L3) Reconstruct HTML — overkill cho MVP.
+
+Reader component skeleton:
 ```tsx
-<PageView>
-  <img src={page.scanUrl} />
-  {page.blocks.map(b => (
-    <span style={{position: 'absolute', left: b.bbox.x, top: b.bbox.y, width: b.w, height: b.h,
-                   color: 'transparent', userSelect: 'text'}}>
+<PageView style={{ position: 'relative', width: page.width, height: page.height }}>
+  <img src={page.scanUrl} style={{ width: '100%', display: 'block' }} />
+  {page.blocks.map((b, i) => (
+    <span
+      key={i}
+      style={{
+        position: 'absolute',
+        left: `${b.bbox.x * 100}%`, top: `${b.bbox.y * 100}%`,
+        width: `${b.bbox.w * 100}%`, height: `${b.bbox.h * 100}%`,
+        color: 'transparent',
+        userSelect: 'text',
+        cursor: 'text',
+      }}
+      onMouseUp={onTextSelected}
+    >
       {b.text}
     </span>
   ))}
 </PageView>
 ```
+`bbox` normalized 0-1 (ratio) → responsive khi parent resize (zoom in/out).
 
-### TTS
+### TTS ✅ CHỐT: Web Speech API client-side
 
 | Option | Free | Quality | Latency |
 |---|---|---|---|
-| **Web Speech API** `window.speechSynthesis` | ✅ | Phụ thuộc OS/browser voice | <100ms (local) |
-| Google Cloud TTS | $4/1M chars | Rất tự nhiên (WaveNet) | ~500ms |
-| Azure Neural TTS | $16/1M chars | Rất tự nhiên | ~500ms |
-| ElevenLabs | $5/mo cho 30k chars | Nhất, có emotion | ~1s |
+| **✅ Web Speech API** `window.speechSynthesis` | ✅ | Phụ thuộc OS/browser voice | <100ms (local). **MVP CHỐT.** |
+| Google Cloud TTS | $4/1M chars | Rất tự nhiên (WaveNet) | ~500ms. Phase 2 upgrade. |
+| Azure Neural TTS | $16/1M chars | Rất tự nhiên | — |
+| ElevenLabs | $5/mo cho 30k chars | Nhất, có emotion | — |
 
-**MVP**: Web Speech API client-side (zero cost, works offline). Cache audio blob trong IndexedDB nếu cần replay. Upgrade cloud TTS phase 2 khi user feedback voice quality thấp.
+**Implementation**:
+```typescript
+function speak(text: string, lang: string = 'en-US', rate: number = 0.9) {
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = lang;
+  utterance.rate = rate;  // 0.9 = chậm hơn chút cho learner
+  // Chọn voice English native (ưu tiên 'en-US' hoặc 'en-GB')
+  const voices = window.speechSynthesis.getVoices();
+  const voice = voices.find(v => v.lang === lang && v.localService)
+             || voices.find(v => v.lang.startsWith('en'));
+  if (voice) utterance.voice = voice;
+  window.speechSynthesis.speak(utterance);
+}
+```
+
+**Lưu ý**:
+- `getVoices()` async load, phải wait `voiceschanged` event lần đầu.
+- Chrome Mac/Windows có voice offline, Linux may không có → fallback cloud TTS phase 2.
+- Zero cost + offline, không cần BE proxy.
 
 ### Dictionary
 
@@ -214,13 +248,18 @@ class GoogleVisionProvider implements OcrProvider { ... }
 
 ## Technology stack (locked)
 
-Trong context MVP này, chốt thêm (ngoài stack chung của1-app):
+**Chốt từ brainstorm**:
+- **OCR**: ✅ Tesseract.js self-host (worker thread, parallel 4)
+- **Layout**: ✅ L2 scan + text overlay (bbox normalized 0-1)
+- **TTS**: ✅ Web Speech API client-side
+
+**Chốt trong MVP design**:
 - **File storage**: Local filesystem (phase 1 personal use) → S3/MinIO phase 2 (prod).
 - **Queue**: Redis + BullMQ.
 - **Realtime**: socket.io (progress streaming).
 - **File upload**: Multer (Express) hoặc @fastify/multipart.
 - **PDF handling**: `pdf-lib` (split pages) + `pdf2pic` (convert page → image cho OCR).
-- **Image preprocessing** (optional, boost OCR accuracy): `sharp` grayscale + contrast + deskew.
+- **Image preprocessing**: `sharp` grayscale + normalize + deskew (boost OCR accuracy).
 
 ## Phased delivery
 
