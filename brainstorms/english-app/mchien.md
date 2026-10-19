@@ -18,10 +18,30 @@
 
 - [ ] [overview] Chốt stack framework: Express/Fastify/NestJS? Vite/Next.js?
 - [ ] [overview] Setup repo + folder structure (monorepo pnpm workspaces hay 2 repos riêng BE+FE?)
-- [ ] [overview] Scope phase 1 — chốt features MVP (flashcard SRS / vocab quiz / grammar check / conversation / listening?)
+- [ ] [overview,backend,web] **Book ingestion + reader + flashcard (MVP phase 1)**:
+    - **Input**: tài liệu giấy scanned (ảnh/PDF nhiều trang)
+    - **Pipeline**:
+      1. User upload scan (ảnh JPG/PNG hoặc PDF) → BE lưu raw
+      2. **OCR** extract text từng trang → giữ bounding box + reading order
+      3. **Layout preservation** càng nhiều càng tốt (page break, paragraph, heading, image anchor)
+      4. Store MongoDB: `Book {title, author, pages: [{pageNo, imageUrl, text, blocks: [{bbox, text, type}]}]}`
+      5. Serve web reader
+    - **UI web**:
+      - Paginated reader (như Google Books) — hiển thị original scan + overlay text selectable
+      - Click/select từ → popup phát âm (TTS) + definition + nút "Add to flashcard deck"
+      - Flashcard deck list → SRS review (SM-2)
+    - **Pending decisions**:
+      - [ ] OCR engine: Tesseract.js (free, run BE) / Google Vision API / Azure Computer Vision / AWS Textract (paid, better accuracy)
+      - [ ] Layout fidelity: text-only (markdown-like) vs structured JSON với bbox + font estimate vs PDF overlay (text layer invisible behind scan image)
+      - [ ] TTS: Web Speech API browser native (free, voice chất lượng tùy OS) / ElevenLabs / Google Cloud TTS / Azure Neural TTS
+      - [ ] Dictionary API: Free Dictionary API (free, basic) / Merriam-Webster (free tier limited) / Oxford Dictionaries (paid)
+      - [ ] Multi-book MVP vs 1-book-at-a-time
+      - [ ] Upload size limit: trang → sách 300 trang 500MB PDF?
+      - [ ] Processing async qua queue (BullMQ + Redis?) hay sync với progress stream
 
 ## Summary (AI)
 <!-- AI điền ngay dưới TODO sau khi chạy pipeline. Dev không sửa tay. -->
 
 | TODO | scope | design | openspecs | code | review | status |
 |---|---|---|---|---|---|---|
+| Book ingestion + reader + flashcard MVP | `overview,backend,web` | [`book-ingestion-mvp.md`](../../designs/english-app/book-ingestion-mvp.md) — architecture + data model + OCR/TTS/dictionary options + phased delivery (1a→1d) | — (chờ dev chốt pending decisions trước) | — (chờ repo setup) | — | 🧠 **brainstorm — design done, chờ dev chốt 7 pending decisions** |
