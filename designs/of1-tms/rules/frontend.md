@@ -55,7 +55,7 @@
 
 ### 3.2. Data binding & inputs
 
-**🚫 TUYỆT ĐỐI KHÔNG viết raw HTML input**: `<input/>`, `<select/>`, `<textarea/>`, `<checkbox/>`, … **KHÔNG được dùng** trong code TMS. Luôn dùng component wrapper từ `bs.*`:
+**🚫 TUYỆT ĐỐI KHÔNG viết raw HTML input / button**: `<input/>`, `<select/>`, `<textarea/>`, `<checkbox/>`, **`<button/>`** … **KHÔNG được dùng** trong code TMS / of1-document. Luôn dùng component wrapper từ `bs.*`:
 
 | Kiểu field | Component |
 |-----------|-----------|
@@ -65,12 +65,35 @@
 | Date / Datetime | `bs.BBDate`, `bs.BBDateTime` |
 | Select (enum) | `bs.BBSelect` |
 | Textarea | `bs.BBTextArea` |
+| **Button** | **`bs.Button`** (có `laf` prop: `primary / secondary / success / danger / info / warning / link`) |
+| Button group | `bs.ButtonGroup` (wrap nhiều `bs.Button`) |
 
 Props chuẩn mọi `bs.BB*`:
 ```typescript
 <bs.BBString bean={bean} field="fieldName" label={T('Label')} />
 <bs.BBBoolean bean={bean} field="isActive" label={T('Active')} />
 ```
+
+Props `bs.Button` (match pattern codebase):
+```typescript
+<bs.Button laf='primary' onClick={this.onSave} disable={!valid}>
+  <FeatherIcon.Save size={12} className='me-1' /> {T('Save')}
+</bs.Button>
+
+// Outline variant
+<bs.Button laf='info' outline onClick={this.onToggle}>Toggle</bs.Button>
+
+// Link style
+<bs.Button laf='link' onClick={this.onCancel}>Cancel</bs.Button>
+```
+
+**Vì sao không `<button/>` native**:
+- Thiếu styling bootstrap tự động (btn-primary, btn-outline-*, size)
+- Thiếu `disable` prop (native dùng `disabled` khác tên — dễ typo như `disable` không có effect)
+- Không nhất quán với 90% codebase hiện tại dùng `bs.Button`
+- Theming (dark mode future) chỉ work với `bs.*` wrapper
+
+**Ngoại lệ hiếm cho `<button/>` native**: khi cần style hoàn toàn custom không fit `bs.Button` (vd zoom controls micro ở toolbar xlsx viewer) → OK, nhưng ưu tiên `bs.Button` outline + size trước. Khi touch file có native `<button/>`, migrate sang `bs.Button` dần.
 
 → 2-way binding tự động vào `bean[fieldName]`, cùng pattern validation + grid context.
 
@@ -352,6 +375,75 @@ customHeaderRender: (_ctx: grid.VGridContext, _field, _ele) => (
 - ✅ Refresh **chỉ VGrid** (gồm footer render), không whole DbEntityList
 - ✅ Lighter hơn `this.forceUpdate()` ở parent
 - `_ctx` có sẵn trong customHeaderRender signature, không cần ref
+
+### 3.4.3. Notification — ưu tiên `.withEntityOpNotification()` khi call API, `appContext.addOSNotification` cho client-side
+
+**3 cấp độ ưu tiên** cho feedback user:
+
+| Priority | API | Khi dùng |
+|---|---|---|
+| **1 — ưu tiên nhất** | `backendCall.withEntityOpNotification(op, entityLabel, affectedCount?)` chained trước `.call()` | API call có success/fail cần notify. Tự wire luôn cả success + fail toast, generic message theo op (`commit` / `delete` / `custom`) |
+| **2 — client-side action** | `appContext.addOSNotification(type, label, detail?, cause?)` | Action không gọi API (filter apply, validate pass, state transition) hoặc API success cần rich content phụ thuộc response |
+| **3 — error chi tiết** | `bs.notificationShow(type, label, detail?, cause?)` | Chỉ cho error cần user đọc kỹ stack/payload hoặc **validation blocking** (user phải sửa trước khi tiếp tục) |
+
+**Pattern mẫu**:
+
+```typescript
+// ✅ 1. API call → prefer chained method
+appContext.getBackendConfigs().getBackendConfig('tms')
+  .createHttpBackendCall('XyzService', 'save', payload)
+  .withEntityOpNotification('commit', 'Xyz Entity')       // auto wire success/fail toast
+  .withSuccessData((r) => {                                // business logic sau khi save ok
+    this.state.id = r.id;
+    this.forceUpdate();
+  })
+  .call();
+
+// ✅ 1b. Delete N records
+.createHttpBackendCall(..., 'deleteByIds', { ids })
+  .withEntityOpNotification('delete', 'Order', ids.length)
+  .withSuccessData(() => this.reload())
+  .call();
+
+// ✅ 1c. API nhưng cần stats breakdown phụ thuộc response → mix với manual
+.createHttpBackendCall(..., 'applyBatch', { rows })
+  .withSuccessData((results) => {
+    const { ok, fail } = countStats(results);
+    appContext.addOSNotification('success', T('Apply xong'),
+      T(`OK:${ok} / Fail:${fail}`));                      // rich content runtime
+    this.importStatus = results;
+    this.forceUpdate();
+  })
+  .withFailNotification('danger', T('Apply thất bại'))    // generic fail toast chained
+  .call();
+
+// ✅ 2. Client-side action không API
+onFilterApplied = () => {
+  this.applyFilter();
+  appContext.addOSNotification('success', T('Filter applied'), T(`${matched} rows`));
+}
+
+// ✅ 3. Validation blocking (user cần sửa trước khi submit)
+if (!form.email) {
+  bs.notificationShow('warning', T('Thiếu email'), T('Nhập email trước khi submit'));
+  return;
+}
+
+// ✅ 3b. Parse error / client-side exception cần đọc kỹ
+try { JSON.parse(raw); } catch (e: any) {
+  bs.notificationShow('danger', T('JSON lỗi'), e?.message || String(e));
+}
+```
+
+**Lý do xếp hạng**:
+- `withEntityOpNotification` tự handle cả success + fail trong 1 chain, giảm boilerplate `withSuccessData + withFail + notification` x 4 lines/call.
+- Static popup (`bs.notificationShow`) cho success flow tạo clutter — user phải click X mỗi lần. OS toast cho error khó debug — nháy mắt là mất.
+- Logic / Service / helper function không có `appContext` reference → bắt buộc dùng `bs.notificationShow`. Trong class component luôn có `this.props.appContext`.
+
+**Lưu ý `withEntityOpNotification` ops**:
+- `commit` → "Saved Successfully!" / "Failed To Save!"
+- `delete` → "N 'label' are deleted!" / "Failed To Delete!"
+- `custom` → "N 'label' records are affected!" (generic)
 
 ### 3.5. Tabs — ưu tiên `bs.DefaultTabPane`
 
