@@ -227,16 +227,46 @@ function speak(text: string, lang: string = 'en-US', rate: number = 0.9) {
 - Chrome Mac/Windows có voice offline, Linux may không có → fallback cloud TTS phase 2.
 - Zero cost + offline, không cần BE proxy.
 
-### Dictionary
+### Dictionary ✅ CHỐT: EN-VN combo (Free Dictionary API + Translation API)
 
-| API | Free | Coverage | Rate limit |
+Dev yêu cầu EN-VN với **phát âm + phiên âm IPA** → cần kết hợp 2 nguồn (không API free nào cover cả 2):
+
+**Primary — English definition + phonetic + audio**:
+| API | Free | Coverage | Notes |
 |---|---|---|---|
-| **Free Dictionary API** `api.dictionaryapi.dev` | ✅ | Decent (Wiktionary-based) | Không rõ, không key |
-| Merriam-Webster | ✅ (dev tier) 1000/day | Excellent | Need API key, dev-only |
-| Oxford Dictionaries | $x paid | Best | Paid |
-| WordsAPI | $x paid | Rất đầy đủ (synonyms, examples) | Paid |
+| **✅ Free Dictionary API** `api.dictionaryapi.dev` | ✅ | Wiktionary-based | IPA phonetic (`/həˈloʊ/`) + audio URL + definitions + synonyms. **MVP CHỐT.** |
+| Merriam-Webster | ✅ dev 1000/day | Excellent | Backup nếu Free Dictionary rate limited |
 
-**MVP**: Free Dictionary API. BE proxy cache 24h vào MongoDB `dictionary_cache` tránh rate limit.
+**Secondary — EN → VN translation**:
+| Option | Free | Quality | Notes |
+|---|---|---|---|
+| **✅ LibreTranslate** self-host | ✅ unlimited | Decent cho từ đơn + phrase ngắn | Docker container, run local. **MVP CHỐT.** |
+| Google Translate API | $20/1M chars (có free tier) | Best | Paid, cần GCP |
+| MyMemory API | ✅ 1000 words/day anonymous, 50000 với email | OK cho từ đơn | HTTP GET, không cần SDK |
+| Lingvanex | $x paid | Good | — |
+
+**Flow popup word khi click**:
+```
+1. User click word "hello"
+2. BE lookup cache MongoDB `dictionary_cache { word, data, expiresAt }`
+3. Cache miss → parallel fetch:
+   a. api.dictionaryapi.dev/api/v2/entries/en/hello → phonetic /həˈloʊ/, audio URL, definitions EN
+   b. LibreTranslate local → "xin chào, chào"
+4. Merge response + cache 7 ngày
+5. Return client:
+   {
+     word: 'hello',
+     phonetic: '/həˈloʊ/',
+     audioUrl: 'https://ssl.gstatic.com/...hello.mp3',
+     definitionsEn: [{partOfSpeech, meanings[]}],
+     translationsVi: ['xin chào', 'chào'],
+   }
+6. Client popup render + button:
+   - "Play audio" (ưu tiên audioUrl từ API, fallback Web Speech API)
+   - "+ Add to flashcard" (lưu word + phonetic + VN translation + context sentence)
+```
+
+**Cache strategy**: `dictionary_cache` TTL 7 ngày, key = `lowercase(word)`. Sách phổ biến các từ sẽ cache hit >90% sau tuần đầu.
 
 ### Processing async queue
 
@@ -248,18 +278,63 @@ function speak(text: string, lang: string = 'en-US', rate: number = 0.9) {
 
 ## Technology stack (locked)
 
-**Chốt từ brainstorm**:
+**Chốt từ brainstorm với dev**:
 - **OCR**: ✅ Tesseract.js self-host (worker thread, parallel 4)
 - **Layout**: ✅ L2 scan + text overlay (bbox normalized 0-1)
 - **TTS**: ✅ Web Speech API client-side
+- **Dictionary**: ✅ Free Dictionary API (IPA + audio + def EN) + LibreTranslate self-host (EN→VN)
+- **Multi-book**: ✅ Library pattern (`/library` list + `/books/:id/read` reader)
+- **Upload limit**: ✅ 500MB PDF per upload
+- **Processing**: ✅ Async BullMQ + Redis queue + socket.io progress stream
+- **User model**: ✅ Single-user (personal, auth tối thiểu — JWT local hoặc skip auth MVP)
+- **Storage limit**: ✅ Không giới hạn (local filesystem, dev tự manage disk)
+- **Flashcard UI**: ✅ Responsive mobile + desktop (swipe gesture mobile, keyboard shortcut desktop)
 
-**Chốt trong MVP design**:
-- **File storage**: Local filesystem (phase 1 personal use) → S3/MinIO phase 2 (prod).
+**Chốt FE framework** (từ dev):
+- **React.js + TypeScript + Vite** — SPA client-side rendering, HMR fast, không cần SSR phase MVP.
+
+**Chốt infra trong MVP design**:
+- **File storage**: Local filesystem (phase 1 personal use) → S3/MinIO phase 2 (nếu cần cloud).
 - **Queue**: Redis + BullMQ.
 - **Realtime**: socket.io (progress streaming).
 - **File upload**: Multer (Express) hoặc @fastify/multipart.
 - **PDF handling**: `pdf-lib` (split pages) + `pdf2pic` (convert page → image cho OCR).
 - **Image preprocessing**: `sharp` grayscale + normalize + deskew (boost OCR accuracy).
+
+## OCR fallback research (phase 2)
+
+Khi dev feedback Tesseract.js accuracy không đủ cho sách khó (handwritten, poor scan, complex layout), các alternatives cần research:
+
+| Engine | License | Lang | Pros | Cons |
+|---|---|---|---|---|
+| **PaddleOCR** (PP-OCRv4) | Apache 2.0 | 80+ incl. EN+VN | DL-based, SOTA accuracy ~95%+, layout parser tốt (table + figure detect) | Python-only, cần spawn child process từ Node, docker container |
+| **EasyOCR** | Apache 2.0 | 80+ | Simple API, PyTorch backend | Chậm hơn Paddle, cần GPU cho tốc độ production |
+| **docTR** | Apache 2.0 | EN primary (có cộng đồng port) | Hugging Face ecosystem, modern transformers architecture | Model lớn (~500MB download), cold start chậm |
+| **Google Vision API** | Paid $1.5/1000 pages | 50+ | 95%+ accuracy, zero infra | Paid, cần GCP account + billing |
+| **Azure Computer Vision Read** | Paid $1/1000 pages | 50+ | 95%+ accuracy | Cần Azure account |
+
+**Strategy swap engine**:
+```typescript
+interface OcrProvider {
+  recognize(imageBuf: Buffer): Promise<PageOcrResult>;
+  readonly name: 'tesseract' | 'paddle' | 'gcp-vision' | 'azure-read';
+}
+```
+
+Phase 1 chỉ `TesseractProvider`. Phase 2 thêm `PaddleOcrProvider` (spawn Python child process qua docker exec) hoặc `GoogleVisionProvider` tùy accuracy requirement.
+
+**Decision tree phase 2**:
+- Accuracy acceptable + sách printed thường → giữ Tesseract.
+- Sách printed nhưng Tesseract < 90% → PaddleOCR (free, best balance).
+- Sách handwritten / historical → Google Vision (paid, worth cho use case khó).
+
+## Open questions ✅ ALL RESOLVED
+
+- ✅ **5.1 Multi-user**: Single-user (personal, mchien) → auth tối thiểu hoặc skip MVP.
+- ✅ **5.2 Storage limit**: Không giới hạn (local filesystem, dev tự manage).
+- ✅ **5.3 Dictionary EN-VN**: Free Dictionary API (IPA + audio + definition EN) + LibreTranslate self-host (EN→VN translation). Response flow + cache strategy trong section Dictionary ở trên.
+- ✅ **5.4 Flashcard review UI**: Mobile + desktop dual support — responsive layout, swipe gesture mobile (left=again, right=good, up=easy) + keyboard shortcut desktop (space=flip, 1-4=quality rating).
+- ✅ **5.5 OCR fallback**: Research phase 2 với 4 candidates ở trên, interface `OcrProvider` chuẩn bị swap sẵn.
 
 ## Phased delivery
 
@@ -286,10 +361,16 @@ function speak(text: string, lang: string = 'en-US', rate: number = 0.9) {
 
 **Phase 2 (sau)**: cloud OCR option, cloud TTS, highlights/annotations, EPUB import, mobile app, PDF export of flashcards, social decks sharing.
 
-## Open questions
+<!-- Open questions moved to section "Open questions ✅ ALL RESOLVED" ở trên. -->
 
-- [ ] Multi-user hay single-user (chỉ mchien dùng)? Ảnh hưởng auth complexity.
-- [ ] Book storage limit? (1 user upload 10 sách x 500MB = 5GB — local disk OK, cloud phase 2)
-- [ ] Dictionary coverage English-English hay English-Vietnamese? (học viên Việt có thể prefer EN-VN translation)
-- [ ] Flashcard review UI: desktop web vs mobile responsive — swipe gesture tap for mobile reviewer?
-- [ ] OCR quality fallback khi Tesseract không đủ: user manual edit text per page? Hoặc re-run cloud OCR?
+## Pending (framework decisions chờ dev chốt)
+
+Chỉ 2 pending block scaffold phase 1a:
+- [ ] Framework BE: Express / Fastify / NestJS
+- [ ] Repo path exact: `/Users/admin/personal/english-app` (hoặc path khác dev chọn)
+
+**Chốt** ✅:
+- Frontend: **React.js + TypeScript + Vite** (recommend từ AI, dev delegate).
+  - Vì sao Vite: fast dev server (HMR < 500ms), modern (ESM native), không opinionated như Next.js (english-app MVP là SPA client-side rendering, không cần SSR cho SEO phase 1).
+  - Vite config: `@vitejs/plugin-react` + `vite-tsconfig-paths` + env `.env.local` cho API URL.
+  - Alternatives CRA (deprecated 2023, không dùng) / Next.js (overkill cho SPA, phase 2 nếu cần SSR landing page).

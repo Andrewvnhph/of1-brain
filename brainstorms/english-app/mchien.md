@@ -16,7 +16,7 @@
 
 <!-- Dev fill ideas tự do ở đây. AI chạy pipeline khi TODO không có `[?]` ambiguous. -->
 
-- [ ] [overview] Chốt stack framework: Express/Fastify/NestJS? Vite/Next.js?
+- [ ] [overview] Chốt stack framework BE: Express/Fastify/NestJS? (FE đã chốt: React.js + TypeScript + Vite)
 - [ ] [overview] Setup repo + folder structure (monorepo pnpm workspaces hay 2 repos riêng BE+FE?)
 - [ ] [overview,backend,web] **Book ingestion + reader + flashcard (MVP phase 1)**:
     - **Input**: tài liệu giấy scanned (ảnh/PDF nhiều trang)
@@ -30,19 +30,24 @@
       - Paginated reader (như Google Books) — hiển thị original scan + overlay text selectable
       - Click/select từ → popup phát âm (TTS) + definition + nút "Add to flashcard deck"
       - Flashcard deck list → SRS review (SM-2)
-    - **Chốt** ✅:
+    - **Chốt tech** ✅:
       - OCR: **Tesseract.js** self-host (free, BE worker thread, parallel 4)
       - Layout: **L2 scan + text overlay** (bbox normalized 0-1, PDF-like)
       - TTS: **Web Speech API** client-side (zero cost, offline)
-    - **Pending** (chờ dev chốt tiếp):
-      - [ ] Dictionary API: Free Dictionary API / Merriam-Webster / Oxford
-      - [ ] Multi-book MVP vs 1-book-at-a-time (ảnh hưởng UI book list)
-      - [ ] Upload size limit (sách 300 trang → ~500MB PDF?)
-      - [ ] Processing: async queue BullMQ+Redis (recommend) hay sync với SSE progress
+      - Dictionary: **Free Dictionary API** (IPA + audio + def EN) + **LibreTranslate** self-host (EN→VN)
+      - Multi-book: **Library pattern** (`/library` + `/books/:id/read`)
+      - Upload limit: **500MB PDF** / upload
+      - Processing: **Async BullMQ + Redis** queue + socket.io progress
+    - **Chốt business** ✅:
+      - User model: **Single-user** (personal, mchien)
+      - Storage: **Không giới hạn** (local filesystem)
+      - Dictionary: **EN-VN với IPA phiên âm + audio** phát âm
+      - Flashcard UI: **Mobile + desktop responsive** (swipe gesture mobile, keyboard shortcut desktop)
+      - OCR fallback: **Phase 2 research** PaddleOCR / EasyOCR / docTR / GCP Vision (document trong design)
 
 ## Summary (AI)
 <!-- AI điền ngay dưới TODO sau khi chạy pipeline. Dev không sửa tay. -->
 
 | TODO | scope | design | openspecs | code | review | status |
 |---|---|---|---|---|---|---|
-| Book ingestion + reader + flashcard MVP | `overview,backend,web` | [`book-ingestion-mvp.md`](../../designs/english-app/book-ingestion-mvp.md) — architecture + data model + OCR/TTS/dictionary options + phased delivery (1a→1d) | — (chờ dev chốt pending decisions trước) | — (chờ repo setup) | — | 🧠 **brainstorm — design done, chờ dev chốt 7 pending decisions** |
+| Book ingestion + reader + flashcard MVP | `overview,backend,web` | [`book-ingestion-mvp.md`](../../designs/english-app/book-ingestion-mvp.md) — architecture + data model + full tech stack locked (Tesseract.js / L2 overlay / Web Speech API / Free Dictionary + LibreTranslate / BullMQ) + OCR fallback research phase 2 + phased delivery (1a→1d) | — | — (chờ dev chốt framework BE + repo setup) | — | 🧠 **design done, FE React+TS+Vite chốt. Pending chỉ framework BE (Express/Fastify/NestJS) + repo path trước code** |
