@@ -55,7 +55,7 @@
 
 ### 3.2. Data binding & inputs
 
-**🚫 TUYỆT ĐỐI KHÔNG viết raw HTML input / button**: `<input/>`, `<select/>`, `<textarea/>`, `<checkbox/>`, **`<button/>`** … **KHÔNG được dùng** trong code TMS / of1-document. Luôn dùng component wrapper từ `bs.*`:
+**🚫 TUYỆT ĐỐI KHÔNG viết raw HTML input / button / table**: `<input/>`, `<select/>`, `<textarea/>`, `<checkbox/>`, **`<button/>`**, **`<table/>`** … **KHÔNG được dùng** trong code TMS / of1-document. Luôn dùng component wrapper từ `bs.*` / `entity.*` / `grid.*`:
 
 | Kiểu field | Component |
 |-----------|-----------|
@@ -67,6 +67,7 @@
 | Textarea | `bs.BBTextArea` |
 | **Button** | **`bs.Button`** (có `laf` prop: `primary / secondary / success / danger / info / warning / link`) |
 | Button group | `bs.ButtonGroup` (wrap nhiều `bs.Button`) |
+| **List / Table hiển thị records** | **`entity.DbEntityList` + `entity.DbEntityListPlugin` + `grid.VGridConfig`** (xem §3.3.1 bên dưới) |
 
 Props chuẩn mọi `bs.BB*`:
 ```typescript
@@ -112,6 +113,69 @@ Props `bs.Button` (match pattern codebase):
 - Grid: `bs.Row` + `bs.Col span={divisible_by_12}`.
 - Split pane: `bs.VSplit` + `bs.VSplitPane` (có `width`, `className`, `updateOnResize`).
 - Icons: `<FeatherIcon.XxxIcon size={12} className="me-1" />` (import `* as FeatherIcon from 'react-feather'`).
+
+### 3.3.1. List / Table hiển thị records — PHẢI dùng `entity.DbEntityList` + VGrid (HARD RULE)
+
+**🚫 TUYỆT ĐỐI KHÔNG viết `<table>` / `<tr>` / `<td>` tự chế** cho list data. OF1 ecosystem (webui-lib + document plugin registry + VGrid actions + export + selection) chỉ work với component framework `entity.DbEntityList`.
+
+**3 options theo scenario**:
+
+1. **Server-side list (data từ BE API)** — pattern chuẩn, 95% các list TMS:
+   ```typescript
+   class XxxListPlugin extends entity.DbEntityListPlugin {
+     constructor() {
+       super([]);
+       this.backend = { backend: 'tms', context: 'company', service: 'XxxService' };
+     }
+     loadData(uiList: entity.DbEntityList<any>) {
+       uiList.markLoading(true);
+       appContext.getBackendConfigs().getBackendConfig('tms')
+         .createHttpBackendCall('XxxService', 'listXxx', { ... })
+         .withSuccessData(items => { this.update(items); uiList.markLoading(false); uiList.forceUpdate(); })
+         .call();
+     }
+   }
+   class XxxList extends entity.DbEntityList {
+     createVGridConfig(): grid.VGridConfig {
+       return {
+         title: '',
+         record: { fields: [{ name: 'col1', label: 'Col 1', width: 150 }, ...] },
+         toolbar: { hide: true },  // hoặc config toolbar
+         view: { currentViewName: 'table', availables: { table: { viewMode: 'table' } } },
+       };
+     }
+   }
+   ```
+
+2. **In-memory list (data đã có sẵn, vd preview trước push, snapshot replay)** — vẫn dùng DbEntityList + plugin, nhưng plugin override `loadData` để fetch rồi `this.update(records)`, hoặc caller `plugin.getListModel().replaceWith(records)` sau mount:
+   ```typescript
+   class InMemoryPlugin extends entity.DbEntityListPlugin {
+     constructor(private records: any[]) { super([]); }
+     loadData(uiList: entity.DbEntityList<any>) {
+       this.update(this.records);
+       uiList.forceUpdate();
+     }
+   }
+   ```
+
+3. **Custom cell render** — dùng `customRender(ctx, field, dRecord)` trong `FieldConfig` để render JSX phức tạp (badge, button, icon, formatted text), KHÔNG escape ra ngoài VGrid:
+   ```typescript
+   { name: 'status', label: 'Status', width: 100,
+     customRender: (_ctx, _f, d) => <bs.Badge laf={d.record.status === 'OK' ? 'success' : 'danger'}>{d.record.status}</bs.Badge>
+   }
+   ```
+
+**Vì sao không `<table>` native**:
+- Mất selection framework (`getSelectedRecords`, checkbox col, bulk actions).
+- Mất filter/sort/paginate built-in của VGrid.
+- Mất auto-export CSV/XLSX (`VGridActionConfig`).
+- Không hỗ trợ column resize, sticky header, virtual scroll cho list lớn.
+- Không nhất quán theming (dark mode, OF1 color tokens).
+- Document attachment plugin + reconcile plugin chỉ bind vào `plugin.getListModel()`, không bind vào DOM table.
+
+**Ngoại lệ hiếm cho `<table>` native**: chỉ khi hiển thị **key-value pair labels** 1-chiều (vd "Field: Value" rows cho detail panel), không phải list records. Ngay cả vậy, nên ưu tiên `bs.Row + bs.Col` hoặc `<dl>/<dt>/<dd>` thay `<table>`.
+
+**Khi touch file có raw `<table>` → migrate sang DbEntityList + VGrid.**
 
 ### 3.3.11. `createPopupPage` vs `addPageContent` — modal vs breadcrumb
 
