@@ -46,6 +46,35 @@ brainstorm(TODO) → design → openspecs(spec) → code → review
 
 After each item: check `[x]` that TODO and update the **Summary** with links + per-phase status.
 
+## Overview on close (HARD RULE)
+
+Mỗi khi 1 TODO được mark `[x]` (closed — merged / abandoned / research-done), AI **PHẢI**
+cập nhật file `./<project>/overview.md` cùng thư mục brainstorm, append 1 row mới nhất lên đầu.
+
+**Mục đích**: Index lịch sử TODO + đo thời gian thực hiện (từ commit đầu nhánh `ai/<slug>` →
+merge PR). Giúp dev review velocity + spot bottleneck + estimate TODO mới.
+
+**File path**: `brainstorms/<project>/overview.md` (vd `brainstorms/of1-tms/overview.md`,
+`brainstorms/of1-document/overview.md`, `brainstorms/english-app/overview.md`).
+
+**Row format** (bảng Markdown):
+
+| # | TODO (tóm tắt 1 câu) | Scope (tag module) | Branch · PR# | Thời gian (start → end) | Duration | Outcome |
+
+**Thời gian lấy từ**:
+- **Start** = ngày commit đầu nhánh `ai/<slug>` (git: `git log --format='%ad' --date=short <branch> | tail -1`).
+  Nếu branch đã deleted → ước từ reflog hoặc merge commit trước đó.
+- **End** = ngày merge PR vào `develop` (git: `git log --merges develop | grep "ai/<slug>"`).
+- **Duration** = số ngày (làm tròn lên) hoặc "research only" / "abandoned" cho case không có branch.
+
+**Khi tạo file lần đầu**: AI tự khởi tạo `overview.md` với header + bảng rỗng + section "Pending TODOs"
++ "Reference" (link mchien.md, rules). Dùng template của `brainstorms/of1-tms/overview.md` làm mẫu.
+
+**Khi file đã tồn tại**: AI append row mới nhất lên đầu bảng "Closed TODOs" (newest-first order).
+KHÔNG rewrite rows cũ trừ khi correct typo hoặc update outcome (vd abandoned → re-opened).
+
+**Không skip rule này** kể cả khi TODO nhỏ. Research-only TODO vẫn add row với Duration "—".
+
 ## Summary block — format
 
 | TODO | design | openspecs | code | review | status |
