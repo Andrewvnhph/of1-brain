@@ -217,6 +217,39 @@ Integer rowNum = row.getInteger("_rowNumber", null);  // allow null khi upstream
 
 Khi thêm Service method nhận `MapObject`, grep lại pass code mới để verify 100% numeric getter đều có default.
 
+### 2.8. Cross-layer Contract — Rename/Drop Field BE (HARD RULE)
+
+Khi BE **rename hoặc drop** field trong entity/DTO/response (vd đổi
+`_pushed` + `_generated` boolean → `_hawbStatus` enum), **PHẢI** scan + update
+TẤT CẢ FE consumers trong CÙNG commit/PR.
+
+**Lý do**: FE không có compile check cross-boundary — thay đổi silent → UI render
+sai (badge luôn "new", filter sai, button logic broken) mà build vẫn pass.
+Runtime cũng không throw vì JS `obj.undefinedField = undefined` = falsy, không
+error → bug lọt vào prod âm thầm.
+
+**Checklist khi rename/drop field BE**:
+1. `grep -rn "<oldFieldName>" webui/` toàn FE codebase (bao gồm `.ts`/`.tsx` test files)
+2. Update tất cả refs — không skip test mocks hoặc comments
+3. Update TypeScript interface (`interface X { oldField?: ...; }` → `newField`)
+   để compile sẽ catch nếu còn ref sót
+4. Commit chung PR BE+FE để atomic deploy (tránh race: BE deploy trước → FE stale
+   render sai field cho user)
+5. Verify qua UI thủ công sau deploy — field undefined → render default state,
+   dễ miss nếu không click vào feature tương ứng
+
+**Nếu scope quá lớn** cho 1 PR → BE giữ cả 2 fields tạm (OLD + NEW) đồng thời,
+FE migrate dần qua N releases, release cuối mới DROP OLD field. Document rõ
+expire date cho OLD field trong javadoc entity.
+
+**Example precedent** (ví dụ thật):
+- Commit `1e2b6870b6` BE đổi `pushedBfsOneHawb` + `generatedBfsOneHawb` boolean →
+  `bfsHawbStatus` enum trong `TMSBillApiLog`.
+- FE `UICreateHblBfsOnePreview.tsx` quên update → badge Status luôn show "new"
+  cho mọi record kể cả đã PUSHED → dev user discover sau 1 ngày deploy.
+- Fix commit `7e10a8115b` nhánh `ai/fix-hawb-status-fe` — có thể tránh được nếu
+  rule này được follow từ đầu.
+
 ---
 
 ## 3. Database & Entity Design (Domain-Driven Design)
