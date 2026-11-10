@@ -6,6 +6,9 @@
 .claude/*.local.env
 .claude/*.local.yaml
 
+# Logs tải về từ server để Claude phân tích — không commit
+logs-local/
+
 # Python
 __pycache__/
 *.pyc
