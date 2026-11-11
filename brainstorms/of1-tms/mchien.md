@@ -54,7 +54,7 @@
 
 | TODO | module | design | openspecs | code | review | status |
 |---|---|---|---|---|---|---|
-| Khảo sát và tích hợp Liquibase vào of1-tms | `overview,core` | [`liquibase-integration.md`](../../designs/of1-tms/liquibase-integration.md) | — | branch `ai/liquibase-integration` · HEAD `37a5c83cfc` · 3 commits · 4 files +27 | compileJava clean | ✅ **done** |
+| Khảo sát và tích hợp Liquibase vào of1-tms | `overview,core` | [`liquibase-integration.md`](../../designs/of1-tms/liquibase-integration.md) | — | branch `ai/liquibase-integration` · HEAD `3b97c176fe` · `datatpTMS` @Primary + Liquibase auto-run + master changelog + changeset `001-normalize-ops-job-casing.sql` + `liquibase-core` + `opencsv` added to `serverAppJars` + old Flyway SQL removed | — | ✅ **done** |
 | Tìm hiểu DB migration tools (Liquibase/Flyway) | `overview` | [`research-db-migration.md`](../../designs/of1-tms/research-db-migration.md) | — | — | — | ✅ **research done** |
 | Học về k8s | `overview` | [`research-k8s.md`](../../designs/of1-tms/research-k8s.md) | — | — | — | ✅ **research done** |
 | Nghiên cứu drag-drop attachment từ Outlook | `+ui,bill` | [`research-outlook-attachment-dragdrop.md`](../../designs/of1-tms/research-outlook-attachment-dragdrop.md) | — | — | — | ✅ **done** |
