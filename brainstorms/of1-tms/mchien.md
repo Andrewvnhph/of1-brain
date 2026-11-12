@@ -54,6 +54,7 @@
 
 | TODO | module | design | openspecs | code | review | status |
 |---|---|---|---|---|---|---|
+| Centralize dep versions in gradle.properties | `overview` | — | — | branch `ai/gradle-version-centralize` · HEAD `55c9744e99` · 5 files · extract 13 hardcoded versions (lombok, liquibase, opencsv, bouncycastle, firebase, h2, junit, javaxAnnotation, jakartaServlet, microsoftGraph, microsoftGraphCore, microsoftKiota, apacheHttpClient5/Core5) into gradle.properties | — | ✅ **done** |
 | Khảo sát và tích hợp Liquibase vào of1-tms | `overview,core` | [`liquibase-integration.md`](../../designs/of1-tms/liquibase-integration.md) | — | branch `ai/liquibase-integration` · HEAD `2b7bcf07c3` · merged develop `914d080492` · **8 commits**: `datatpTMS` @Primary + Liquibase auto-run + master changelog + changeset `20261111000000-normalize-ops-job-casing.sql` (timestamp naming) + `liquibase-core` + `opencsv` → `serverAppJars` + remove `liquibaseDiff` Gradle task + remove `tools.sh` liquibase commands + `TMSPartnerAddress` as global master data (remove `shareAcrossCompany`) + credentials moved to `env.sh` + management endpoints commented out | — | ✅ **merged → develop** |
 | Tìm hiểu DB migration tools (Liquibase/Flyway) | `overview` | [`research-db-migration.md`](../../designs/of1-tms/research-db-migration.md) | — | — | — | ✅ **research done** |
 | Học về k8s | `overview` | [`research-k8s.md`](../../designs/of1-tms/research-k8s.md) | — | — | — | ✅ **research done** |
