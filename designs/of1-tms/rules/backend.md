@@ -479,3 +479,80 @@ Khi tạo service **chỉ delegate** (không business, không transaction), dùn
 
 ### Testing
 - [ ] Unit test `*UnitTest.java` + `@Tag("unit")` + Mockito + `ReflectionTestUtils.setField(...)`, không `@SpringBootTest`.
+
+---
+
+## 6. DB Migration (Liquibase)
+
+### Nguyên tắc
+
+- Liquibase **tự chạy khi app start** — mọi changeset chưa apply sẽ được apply tự động.
+- SQL changeset **viết tay** — không dùng auto-detect từ DB hay JPA diff.
+- Mọi thay đổi DDL (CREATE/ALTER/DROP TABLE, ADD/DROP COLUMN, CREATE INDEX) **bắt buộc** có changeset file tương ứng trước khi merge.
+
+### Workflow — khi thêm/sửa `@Entity` hoặc `@Column`
+
+```
+1. Viết Java code (@Entity mới / @Column mới / đổi kiểu)
+         ↓
+2. Tạo file SQL thủ công: db/changelog/changes/{yyyyMMddHHmmss}-{description}.sql
+         ↓
+3. Thêm <include> vào db.changelog-master.xml
+         ↓
+4. git commit cả SQL file + master.xml cùng commit với Java code
+         ↓
+5. App restart → Liquibase tự detect changeset mới → apply vào DB
+```
+
+### File naming convention
+
+```
+db/changelog/changes/{yyyyMMddHHmmss}-{description}.sql
+
+timestamp = yyyyMMddHHmmss, lấy thời điểm tạo file (đến giây)
+desc      = kebab-case, mô tả ngắn gọn thay đổi
+
+Ví dụ:
+  20261112143000-add-booking-forwarder-to-tms-bill.sql
+  20261115090000-create-tms-xlsx-template.sql
+```
+
+### SQL file format (bắt buộc)
+
+```sql
+--liquibase formatted sql
+--changeset {author}:{yyyyMMddHHmmss}-{description}
+CREATE TABLE lgc_tms_new_table (
+  id         BIGSERIAL PRIMARY KEY,
+  company_id BIGINT    NOT NULL
+);
+--rollback DROP TABLE lgc_tms_new_table;
+```
+
+- `--liquibase formatted sql` — dòng đầu tiên, bắt buộc
+- `--changeset {author}:{id}` — id phải unique trong toàn module
+- `--rollback` — bắt buộc với mọi CREATE/ALTER/ADD
+
+### Include vào master changelog
+
+```xml
+<!-- db/changelog/db.changelog-master.xml -->
+<databaseChangeLog ...>
+    <include file="db/changelog/changes/005-add-new-table.sql"/>
+</databaseChangeLog>
+```
+
+Thứ tự `<include>` = thứ tự apply. Không reorder sau khi đã chạy trên bất kỳ môi trường nào.
+
+Liquibase tự track changeset đã chạy trong bảng `databasechangelog` — không lo apply trùng.
+
+### HARD RULES
+
+- **KHÔNG** commit SQL cũ (pre-Liquibase) vào changelog — `db/migration/` đã chạy tay trên prod, không convert.
+- **KHÔNG** sửa changeset đã merge vào `develop` — tạo changeset mới sửa lại.
+- **KHÔNG** xóa `<include>` đã có trong master.xml.
+- **KHÔNG** để Java code và SQL file ở 2 commit khác nhau — phải đi cùng nhau.
+
+### Tool hỗ trợ (tùy chọn)
+
+`./tools.sh --liquibaseDiff` — so sánh JPA entity vs live DB, output `diff-output.xml` để tham khảo khi viết SQL. Không dùng trực tiếp — chỉ để verify hoặc spot-check.
