@@ -1,0 +1,23 @@
+title: "Ánh Sáng Trắng Có Màu Không?"
+characters:
+  - name: "Minh"
+    role: "student"
+    personality: "tò mò, hay đặt câu hỏi"
+  - name: "An"
+    role: "scientist"
+    personality: "kiên nhẫn, thích thí nghiệm"
+  - name: "Người kể chuyện"
+    role: "narrator"
+    personality: "khách quan, dẫn dắt"
+conflict: "Minh tin rằng lăng kính tạo ra màu sắc từ ánh sáng trắng vô màu — giống như pha phẩm màu vào nước trong suốt. Với Minh, ánh sáng trắng là ánh sáng thuần khiết, còn màu sắc chỉ là sản phẩm của lăng kính."
+resolution: "Newton đã chiếu chùm sáng qua lăng kính thứ hai úp ngược — các màu hội tụ lại thành ánh sáng trắng. Màu không phải do lăng kính tạo ra mà đã có sẵn trong ánh sáng. Chính nhờ điều này mà màn hình điện thoại chỉ cần 3 màu đỏ, xanh lá, xanh dương để tái tạo hàng triệu màu khác nhau."
+acts:
+  - name: "Setup"
+    duration_min: 1
+    summary: "Minh nhìn thấy cầu vồng sau cơn mưa và hỏi An tại sao bầu trời lại có màu sắc. An đặt câu hỏi ngược lại: 'Em nghĩ ánh sáng trắng có màu không?' Minh tự tin trả lời không — ánh sáng trắng là trắng, không có màu gì cả."
+  - name: "Exploration"
+    duration_min: 7
+    summary: "An và Minh làm thí nghiệm với lăng kính. Lần 1: Minh chiếu ánh sáng trắng qua lăng kính và thấy quang phổ — nhưng vẫn tin đó là màu do lăng kính tạo ra. Lần 2: Họ thử che từng màu trong quang phổ, nhận ra ánh sáng bên kia thiếu mất màu đó. Lần 3: An đặt lăng kính thứ hai úp ngược — các màu hội tụ lại thành ánh sáng trắng. Minh bắt đầu nghi ngờ niềm tin của mình."
+  - name: "Revelation"
+    duration_min: 2
+    summary: "Khoảnh khắc 'aha': nếu lăng kính tạo ra màu, thì lăng kính thứ hai không thể khôi phục lại trắng. Vậy màu đã có sẵn trong ánh sáng trắng từ đầu. Minh nhìn lại màn hình điện thoại và hiểu tại sao chỉ cần 3 màu RGB. Cầu vồng là bầu trời tự chiếu ánh sáng qua triệu triệu lăng kính là những giọt nước."
