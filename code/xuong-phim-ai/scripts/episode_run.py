@@ -13,6 +13,7 @@ Requires: ANTHROPIC_API_KEY env var.
 
 import sys
 import os
+import time
 import argparse
 from pathlib import Path
 
@@ -31,6 +32,7 @@ except ImportError:
 SCRIPTS_DIR = Path(__file__).parent
 SKILLS_DIR = SCRIPTS_DIR.parent / "skills"
 MODEL = "claude-haiku-4-5-20251001"
+DIRECTOR_SCHEMA_KEYS = {"subject", "action", "camera", "lighting", "constraints"}
 
 
 def load_skill(skill_name: str) -> str:
@@ -47,26 +49,55 @@ def episode_path(slug: str, base_dir: str) -> Path:
     return ep
 
 
-def call_claude(system_prompt: str, user_message: str) -> str:
+def call_claude(system_prompt: str, user_message: str, max_tokens: int = 4096) -> str:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
         raise EnvironmentError("ANTHROPIC_API_KEY not set")
     client = anthropic.Anthropic(api_key=api_key)
-    message = client.messages.create(
-        model=MODEL,
-        max_tokens=4096,
-        system=system_prompt,
-        messages=[{"role": "user", "content": user_message}],
-    )
-    return message.content[0].text
+    for attempt in range(4):
+        try:
+            message = client.messages.create(
+                model=MODEL,
+                max_tokens=max_tokens,
+                system=system_prompt,
+                messages=[{"role": "user", "content": user_message}],
+            )
+            return message.content[0].text
+        except anthropic.RateLimitError:
+            if attempt == 3:
+                raise
+            wait = 2 ** attempt * 5
+            print(f"  Rate limited — retrying in {wait}s...")
+            time.sleep(wait)
+        except anthropic.APIStatusError as e:
+            if e.status_code in (529,) and attempt < 3:
+                wait = 2 ** attempt * 10
+                print(f"  API overloaded — retrying in {wait}s...")
+                time.sleep(wait)
+            else:
+                raise
+    raise RuntimeError("Claude API failed after 4 attempts")
 
 
 def extract_yaml_block(text: str) -> str:
     if "```yaml" in text:
-        start = text.index("```yaml") + 7
-        end = text.index("```", start)
-        return text[start:end].strip()
+        fence_start = text.index("```yaml") + len("```yaml")
+        closing = text.find("```", fence_start)
+        if closing == -1:
+            raise ValueError(f"unclosed ```yaml fence in Claude response (len={len(text)})")
+        return text[fence_start:closing].strip()
     return text.strip()
+
+
+def validate_director_schema(data: dict, shot_id: str) -> None:
+    if "raw" in data and len(data) == 1:
+        raise ValueError(f"Shot {shot_id}: schema validation failed — Claude returned unparseable YAML")
+    missing = DIRECTOR_SCHEMA_KEYS - data.keys()
+    if missing:
+        raise ValueError(f"Shot {shot_id}: missing Director's Schema keys: {missing}")
+    empty = [k for k in DIRECTOR_SCHEMA_KEYS if not str(data.get(k, "")).strip()]
+    if empty:
+        raise ValueError(f"Shot {shot_id}: empty Director's Schema fields: {empty}")
 
 
 def run_story(ep: Path) -> None:
@@ -78,7 +109,7 @@ def run_story(ep: Path) -> None:
     skill = load_skill("science-story")
 
     print(f"Generating story arc for {ep.name}...")
-    response = call_claude(skill, f"brief:\n{brief_text}")
+    response = call_claude(skill, f"brief:\n{brief_text}", max_tokens=8192)
     story_yaml = extract_yaml_block(response)
 
     out = ep / "script" / "story.yaml"
@@ -95,7 +126,7 @@ def run_script(ep: Path) -> None:
     skill = load_skill("science-script")
 
     print(f"Generating bilingual script for {ep.name}...")
-    response = call_claude(skill, f"Story arc:\n```yaml\n{story_text}\n```")
+    response = call_claude(skill, f"Story arc:\n```yaml\n{story_text}\n```", max_tokens=8192)
     script_yaml = extract_yaml_block(response)
 
     out = ep / "script" / "script.yaml"
@@ -116,18 +147,33 @@ def run_shots(ep: Path) -> None:
     skill = load_skill("science-director")
     print(f"Generating {len(shots)} Veo 3.1 prompts for {ep.name}...")
 
+    checkpoint_dir = ep / "shots" / "checkpoints"
+    checkpoint_dir.mkdir(exist_ok=True)
+
     veo_prompts = []
     for i, shot in enumerate(shots, 1):
         shot_id = shot.get("id", f"sh{i:02d}")
         desc = shot.get("description", "")
+        checkpoint = checkpoint_dir / f"{shot_id}.yaml"
+
+        if checkpoint.exists():
+            print(f"  [{i}/{len(shots)}] {shot_id}: using checkpoint")
+            veo_prompts.append(yaml.safe_load(checkpoint.read_text(encoding="utf-8")))
+            continue
+
         print(f"  [{i}/{len(shots)}] {shot_id}: {desc[:50]}...")
         response = call_claude(skill, desc)
         prompt_yaml = extract_yaml_block(response)
         try:
             prompt_data = yaml.safe_load(prompt_yaml)
-        except yaml.YAMLError:
-            prompt_data = {"raw": prompt_yaml}
-        veo_prompts.append({"shot_id": shot_id, "scene_id": shot.get("scene_id"), "prompt": prompt_data})
+        except yaml.YAMLError as e:
+            raise ValueError(f"Shot {shot_id}: Claude returned invalid YAML: {e}")
+
+        validate_director_schema(prompt_data, shot_id)
+
+        entry = {"shot_id": shot_id, "scene_id": shot.get("scene_id"), "prompt": prompt_data}
+        checkpoint.write_text(yaml.dump(entry, allow_unicode=True), encoding="utf-8")
+        veo_prompts.append(entry)
 
     out = ep / "shots" / "veo-prompts.yaml"
     out.write_text(yaml.dump(veo_prompts, allow_unicode=True, default_flow_style=False), encoding="utf-8")

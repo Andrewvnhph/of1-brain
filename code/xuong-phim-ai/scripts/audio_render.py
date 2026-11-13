@@ -25,13 +25,6 @@ except ImportError:
     print("Error: pyyaml not installed. Run: pip3 install pyyaml")
     sys.exit(1)
 
-try:
-    from elevenlabs.client import ElevenLabs
-    from elevenlabs import save
-except ImportError:
-    print("Error: elevenlabs package not installed. Run: pip3 install elevenlabs")
-    sys.exit(1)
-
 LANG_NARRATOR_KEY = {"vi": "vi_narrator", "en": "en_narrator"}
 LANG_VOICE_ENV = {"vi": "ELEVENLABS_VOICE_VI", "en": "ELEVENLABS_VOICE_EN"}
 LANG_FILENAME = {"vi": "vi-narrator.mp3", "en": "en-narrator.mp3"}
@@ -44,9 +37,19 @@ def episode_path(slug: str, base_dir: str) -> Path:
     return ep
 
 
+def assert_bilingual_parity(scenes: list) -> None:
+    for scene in scenes:
+        sid = scene.get("id", "?")
+        if not scene.get("vi_narrator"):
+            raise ValueError(f"Scene {sid} missing vi_narrator — bilingual parity broken")
+        if not scene.get("en_narrator"):
+            raise ValueError(f"Scene {sid} missing en_narrator — bilingual parity broken")
+
+
 def build_narration_text(script_path: Path, narrator_key: str) -> str:
     data = yaml.safe_load(script_path.read_text(encoding="utf-8"))
     scenes = data.get("scenes", [])
+    assert_bilingual_parity(scenes)
     lines = [scene[narrator_key] for scene in scenes if scene.get(narrator_key)]
     if not lines:
         raise ValueError(f"No {narrator_key} lines found in script.yaml")
@@ -54,6 +57,11 @@ def build_narration_text(script_path: Path, narrator_key: str) -> str:
 
 
 def render_audio(text: str, voice_id: str, out_path: Path) -> None:
+    try:
+        from elevenlabs.client import ElevenLabs
+        from elevenlabs import save
+    except ImportError:
+        raise ImportError("elevenlabs package not installed. Run: pip3 install elevenlabs")
     api_key = os.environ.get("ELEVENLABS_API_KEY")
     if not api_key:
         raise EnvironmentError("ELEVENLABS_API_KEY not set")
