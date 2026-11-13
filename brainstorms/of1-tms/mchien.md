@@ -15,6 +15,7 @@
 - TODO cross-cutting (không thuộc module nào) → `[overview]`.
 
 ## TODO (dev)
+- [x] [ops,+ui] **Fix `confirmVehicleTripTracking` line 1198** — nếu return tracking đã được confirm bởi người khác: UI so sánh `accountId` từ session với `coordinatorAccountId` trên record, nếu khác → hiển thị thông báo "tracking đã được confirm bởi [tên người khác]" thay vì cho phép confirm lại. ✅ `ai/confirm-tracking-coordinator-check` commit `925fd3ca08`
 - [x] [overview] **Kiểm tra phụ thuộc** `datatp-platform-module-platform-federation` và `datatp-platform-module-webhook` — xem chúng được dùng ở đâu trong of1-tms, có thể bỏ hoặc cần giữ không. ✅ **research done** — cả 2 đang được dùng thực sự, không bỏ được.
 - [x] [overview,core] **Khảo sát và tích hợp Liquibase vào of1-tms** — đánh giá lại Liquibase vs Flyway dựa trên thực tế codebase, thiết kế migration plan từ SQL manual hiện tại sang Liquibase, implement thử trên 1 module (bill hoặc core), viết convention cho team. ✅ branch `ai/liquibase-integration` HEAD `37a5c83cfc` · 3 commits · scope: tms-core only, changelog trống sẵn sàng nhận changeset mới
 - [x] [overview] **Tìm hiểu Liquibase và các công nghệ DB migration tương tự** — so sánh Liquibase, Flyway, và các tool khác; cách quản lý schema migration trong Spring Boot; áp dụng vào of1-tms thay thế việc chạy SQL migration thủ công hiện tại. ✅ **research done** → `designs/of1-tms/research-db-migration.md`
