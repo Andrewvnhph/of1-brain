@@ -4,7 +4,28 @@
       "mcp__claude_ai_Notion__notion-create-pages",
       "mcp__claude_ai_Notion__notion-get-teams",
       "mcp__claude_ai_Notion__notion-list-private-pages",
-      "mcp__claude_ai_Notion__notion-update-page"
+      "mcp__claude_ai_Notion__notion-update-page",
+      "Bash(git merge *)",
+      "Bash(git push *)",
+      "Bash(git checkout *)",
+      "Bash(./gradlew :datatp-logistics-module-tms-core:compileJava)",
+      "Bash(gradle :datatp-logistics-module-tms-core:compileJava)",
+      "Bash(brew services *)",
+      "Bash(brew info *)",
+      "Bash(/Library/PostgreSQL/16/bin/psql -U postgres -c \"\\\\l\")",
+      "Bash(grep -v \"^$\")",
+      "Bash(PGPASSWORD=\"\" /Library/PostgreSQL/16/bin/psql -h 127.0.0.1 -U datatp-tms -d datatp_tms_db -c \"\\\\l\")",
+      "Bash(PGPASSWORD=admin /Library/PostgreSQL/16/bin/psql *)",
+      "Bash(PGPASSWORD=admin /Library/PostgreSQL/16/bin/pg_dumpall *)",
+      "Read(//opt/homebrew/var/postgresql@18/**)",
+      "Bash(/opt/homebrew/opt/postgresql@18/bin/postgres --version)",
+      "Bash(sudo launchctl list)",
+      "Bash(pg_isready -h 127.0.0.1 -p 5432)",
+      "Bash(/opt/homebrew/opt/postgresql@18/bin/psql -h 127.0.0.1 -U admin -d postgres -c \"SELECT version\\(\\);\")",
+      "Bash(gradle :datatp-logistics-module-tms-core:compileJava --offline)",
+      "Bash(bash *)",
+      "Bash(git -C /Users/admin/OF1/forgejo/of1-platform/of1-brain log --oneline -3)",
+      "Bash(git *)"
     ]
   }
 }

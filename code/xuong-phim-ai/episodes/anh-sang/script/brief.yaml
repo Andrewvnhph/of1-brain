@@ -1,0 +1,14 @@
+topic: "Ánh sáng và màu sắc"
+source_book: "Vật lý đại cương - tập 2"
+concepts:
+  - "Ánh sáng là sóng điện từ với các bước sóng khác nhau"
+  - "Màu sắc là cảm nhận của não về bước sóng ánh sáng"
+  - "Lăng kính tán sắc ánh sáng trắng thành quang phổ cầu vồng"
+  - "Mắt người có 3 loại tế bào cảm nhận màu sắc (đỏ, xanh lá, xanh dương)"
+  - "Ánh sáng trắng là tổng hợp của tất cả màu sắc trong quang phổ nhìn thấy"
+discovery_moment: "Newton dùng lăng kính chứng minh ánh sáng trắng là tổng hợp nhiều màu — khi chiếu qua lăng kính thứ hai ngược chiều, các màu hợp lại thành trắng"
+common_misconception: "Ánh sáng trắng là ánh sáng thuần khiết không có màu, còn màu sắc là do lăng kính tạo ra chứ không phải có sẵn trong ánh sáng"
+real_world_examples:
+  - "Cầu vồng sau mưa — giọt nước hoạt động như lăng kính nhỏ"
+  - "Màn hình điện thoại dùng 3 màu RGB để tạo mọi màu sắc"
+  - "Kính lọc màu trong đèn sân khấu"

@@ -1,0 +1,228 @@
+# Character modules (reusable across all shots)
+# MINH: chibi anime boy, large round head, big expressive dark brown eyes with round pupils,
+#        rosy cheeks, small button nose, dark spiky-fluffy black hair, warm light tan skin,
+#        white short-sleeve t-shirt, dark navy shorts, fully rendered cartoon arms and hands,
+#        Studio Ghibli-inspired 2D hand-drawn animation style
+# AN:   chibi anime character, large round head, calm gentle almond eyes, neat short dark hair,
+#        warm light tan skin, white lab coat over light blue shirt, fully rendered cartoon body,
+#        Studio Ghibli-inspired 2D hand-drawn animation style
+# BG-OUTDOOR: warm sandy ground, patches of green grass, light blue sky with soft white clouds,
+#              2D painterly background, Ghibli art style, warm natural daylight
+# BG-LAB:     warm indoor lab, wooden paneled walls, shelves with glass beakers and flasks,
+#              golden ambient lighting, 2D painterly background, Ghibli art style
+
+- shot_id: sh01
+  scene_id: s01
+  prompt:
+    subject: "two chibi anime-style boys — left (Minh): large round head, big dark expressive eyes, dark spiky hair, rosy cheeks, white t-shirt, dark shorts; right (An): large round head, calm gentle eyes, neat dark hair, white lab coat — both tilting heads upward"
+    action: "both chibi boys stand side by side gazing upward at a large colorful rainbow arc stretching across the sky above them, Minh's arms relaxed at sides with curious wide eyes, An standing calmly with slight smile"
+    camera: "wide shot, front angle, static camera"
+    lighting: "warm natural daylight from above, soft even outdoor illumination, light blue sky gradient, gentle ground shadow beneath figures"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, outdoor background with blue sky, sandy ground, green grass patches, soft white clouds, colorful rainbow arc above both figures, no photorealistic rendering, no 3D CGI"
+
+- shot_id: sh02
+  scene_id: s01
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, big expressive dark eyes wide with confidence, dark spiky hair, rosy cheeks, white t-shirt, dark shorts, right arm extended upward pointing toward sky"
+    action: "raises right arm upward pointing confidently at rainbow, left arm gestures outward in explanatory motion, body faces slightly left, mouth open mid-explanation with energetic expression"
+    camera: "medium shot, three-quarter angle, static camera"
+    lighting: "warm natural daylight, soft even outdoor illumination, warm sky tones in background"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, outdoor sky and grass background, expressive anime face with rosy cheeks, no photorealistic rendering, no 3D CGI"
+
+- shot_id: sh03
+  scene_id: s02
+  prompt:
+    subject: "chibi anime character (An) with large round head, calm gentle almond eyes, neat short dark hair, white lab coat, one index finger raised upward in questioning pose, soft curious expression"
+    action: "raises right index finger slowly upward, head tilts slightly to one side with gentle curious eyebrow raise, body remains calm and upright, small smile on round face"
+    camera: "medium shot, front angle, static camera"
+    lighting: "soft warm outdoor ambient light transitioning to indoor, even gentle illumination"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, white lab coat visible, small floating question mark near raised finger, warm background, no photorealistic rendering, no 3D CGI"
+
+- shot_id: sh04
+  scene_id: s02
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, eyes suddenly wide open with round pupils in surprise, dark spiky hair, rosy cheeks, white t-shirt, one arm frozen mid-gesture, mouth open in O shape"
+    action: "stands completely still with one arm half-raised and mouth open wide in O, large round eyes express being caught with no answer, body stiffens with surprise"
+    camera: "medium close-up, front angle, static camera"
+    lighting: "soft warm light, even gentle illumination on face highlighting surprised expression"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly style, expressive chibi face with wide surprised eyes and open mouth, small ellipsis floating above head, warm background, no photorealistic rendering"
+
+- shot_id: sh05
+  scene_id: s03
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, excited wide eyes, dark spiky hair, rosy cheeks, white t-shirt, holding cylindrical flashlight in both hands aimed at small triangular glass prism on wooden lab table"
+    action: "points flashlight toward prism on table with focused excited expression, white light beam extends from flashlight through prism, six-color spectrum band fans out from prism onto warm wooden wall to the right"
+    camera: "medium shot, side angle, static camera"
+    lighting: "dim warm indoor lab lighting, single flashlight beam as dramatic key light casting spectrum colors on wall, golden ambient fill from overhead"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, indoor wooden lab background with beakers on shelves, spectrum colors (red orange yellow green blue violet) for light beam only, warm golden ambient, no photorealistic rendering"
+
+- shot_id: sh06
+  scene_id: s03
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, huge triumphant grin showing teeth, dark spiky hair, rosy cheeks brightened with excitement, white t-shirt, both arms raised above head in celebration"
+    action: "raises both arms upward in full triumph celebration, body leans forward with energy, feet planted wide, big crescent-moon smile with rosy cheeks glowing, eyes curved upward in joy"
+    camera: "medium shot, front angle, static camera"
+    lighting: "warm indoor lab ambient light, cheerful bright tone, golden light from above"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, expressive triumphant chibi face, small exclamation marks and sparkles floating above head, indoor lab background warm and golden, no photorealistic rendering"
+
+- shot_id: sh07
+  scene_id: s04
+  prompt:
+    subject: "two pairs of cartoon hands — left hand with white lab coat cuff (An) extending flat red rectangular glass filter toward right hand with white t-shirt sleeve (Minh) reaching to receive"
+    action: "left hand with lab coat cuff slowly extends red glass rectangle toward right, right hand with t-shirt sleeve reaches forward palm open to receive, both hands careful and deliberate"
+    camera: "close-up, front angle, static camera"
+    lighting: "soft warm indoor lab light from above, red tint from filter glass, even gentle illumination"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm close-up style, expressive cartoon hands with fabric cuffs, red color for filter rectangle glass only, warm neutral background, no photorealistic rendering"
+
+- shot_id: sh08
+  scene_id: s04
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, furrowed determined brows, dark spiky hair, rosy cheeks, white t-shirt, holding red rectangular filter between flashlight and prism with both hands"
+    action: "positions red glass filter between flashlight and prism with both arms extended and determined expression, narrow red beam passes through filter then through prism, narrow dim spectrum appears on wall"
+    camera: "medium shot, side angle, static camera"
+    lighting: "dim indoor lab, red-tinted flashlight beam as key light through filter, warm golden ambient fill, spectrum glow on wall"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, indoor lab background with wooden walls and shelves, red filter clearly visible in beam path, narrowed spectrum on wall, no photorealistic rendering"
+
+- shot_id: sh09
+  scene_id: s05
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, brow furrowed in confusion, dark spiky hair, rosy cheeks, white t-shirt, upper body leaning forward toward wall, one hand raised to chin in thinking pose"
+    action: "leans forward from waist examining narrow red-orange band on wall, hand raised to round chin in classic thinking gesture, eyes squinted slightly in confusion, mouth in small uncertain frown"
+    camera: "medium shot, side angle, static camera"
+    lighting: "dim indoor lab light, warm golden ambient, slight reddish-orange tint on wall from narrow spectrum"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, indoor wooden lab background, only thin red-orange band visible on wall, warm earthy golden tones, expressive confused chibi face, no photorealistic rendering"
+
+- shot_id: sh10
+  scene_id: s05
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, clear skeptical frown with downward eyebrows, dark spiky hair, rosy cheeks, white t-shirt, both arms crossed firmly over chest"
+    action: "crosses both arms firmly over chest, tilts large round head slightly downward, eyebrows angled sharply downward in skeptical expression, mouth in firm flat line showing dissatisfaction"
+    camera: "medium shot, front angle, static camera"
+    lighting: "soft warm indoor lab ambient, even golden illumination"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, expressive skeptical chibi face with strong eyebrow expression, arms crossed posture, indoor lab background warm golden tones, no photorealistic rendering"
+
+- shot_id: sh11
+  scene_id: s06
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, focused concentrated eyes, dark spiky hair, rosy cheeks, white t-shirt, right arm fully extended forward with index finger pointing at spectrum on wall"
+    action: "extends right arm fully forward with index finger precisely touching one color band in spectrum strip on wall, fingertip covers one narrow band while other colors remain on either side, expression focused and investigative"
+    camera: "medium close-up, side angle, static camera"
+    lighting: "dim indoor lab light, spectrum colors casting colored tint on wall and face, warm golden ambient fill"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, indoor wooden lab background, spectrum strip on wall with finger blocking one band, warm earthy tones, expressive focused chibi face, no photorealistic rendering"
+
+- shot_id: sh12
+  scene_id: s06
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, eyes suddenly wide open with surprise and mouth slightly open, dark spiky hair, rosy cheeks, white t-shirt, head tilted sideways, finger still pointing at spectrum gap"
+    action: "tilts large round head sideways in surprise while keeping finger on spectrum, gap visible in spectrum where one color is missing, eyes wide and round with pupils showing shock, body weight shifts to one side"
+    camera: "medium shot, side angle, static camera"
+    lighting: "dim indoor lab, spectrum colors on wall, warm golden ambient"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, expressive surprised chibi face with wide eyes, spectrum strip with visible color gap, small question mark floating near head, indoor lab background, no photorealistic rendering"
+
+- shot_id: sh13
+  scene_id: s06
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, eyes wide open in growing excitement and mouth open in wonder, dark spiky hair, rosy cheeks glowing, white t-shirt, arm sweeping across spectrum strip touching each color"
+    action: "moves index finger across spectrum strip from left to right touching each color band in sequence, each touch causes that band to vanish independently, expression transitions from skeptical to amazed as discoveries mount"
+    camera: "medium shot, side angle, static camera"
+    lighting: "dim indoor lab, spectrum colors casting changing colored light on face, warm golden ambient"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, indoor wooden lab background with beakers on shelves, spectrum strip on wall showing gaps as finger sweeps, rosy cheeks and wide eyes showing growing wonder, no photorealistic rendering"
+
+- shot_id: sh14
+  scene_id: s07
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, hopeful expression with eyebrows raised, dark spiky hair, white t-shirt, carefully placing second triangular glass prism after first prism on wooden lab table"
+    action: "carefully positions second prism directly after first along light beam path, both prisms same orientation, spectrum spreads even wider on wall, Minh leans in slightly with hopeful expectant expression"
+    camera: "medium shot, side angle, static camera"
+    lighting: "dim indoor lab, flashlight beam as key light, wider spectrum glow on wall, warm golden ambient"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, two glass prism props on wooden table, wider spectrum band on wall, indoor lab background with warm wooden tones and shelves, no photorealistic rendering"
+
+- shot_id: sh15
+  scene_id: s07
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, shoulders slumped in clear disappointment, eyes drooping downward, mouth in sad curve, dark spiky hair, white t-shirt, taking one step backward away from lab setup"
+    action: "takes one step backward away from prism setup, both arms drop limply to sides, large round head bows slightly forward, droopy disappointed eyes and downward mouth curve, posture fully deflated"
+    camera: "wide shot, front angle, static camera"
+    lighting: "soft warm indoor lab ambient, golden even light"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, expressive disappointed chibi face with droopy eyes, indoor lab background with prism setup visible and wide spectrum on wall, small downward arrow near figure, warm earthy golden tones, no photorealistic rendering"
+
+- shot_id: sh16
+  scene_id: s08
+  prompt:
+    subject: "chibi cartoon hands (An) with white lab coat cuffs picking up small triangular glass prism and rotating it deliberately upside down, calm precise motion"
+    action: "picks up triangular glass prism with both hands and rotates it slowly upside down in deliberate calm motion, prism flips from apex-up to apex-down orientation, curved motion arc lines show rotation path"
+    camera: "close-up, front angle, static camera"
+    lighting: "soft warm indoor lab light, even gentle illumination on hands"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm close-up style, lab coat cuffed hands, prism shape with rotation arc motion lines, warm neutral background, no photorealistic rendering"
+
+- shot_id: sh17
+  scene_id: s08
+  prompt:
+    subject: "chibi anime character (An) with large round head, calm focused expression, neat dark hair, white lab coat, positioning reversed triangular prism carefully into spread of rainbow colors between first prism and wooden wall"
+    action: "places reversed prism precisely into spread of rainbow colors from first prism, prism oriented opposite direction, both hands hold steady, calm focused eyes with slight knowing expression"
+    camera: "medium shot, side angle, static camera"
+    lighting: "dim indoor lab, flashlight beam as key light, spectrum colors entering second prism, warm golden ambient fill"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, two glass prism props (first normal, second reversed), spectrum entering reversed prism, indoor wooden lab background, warm earthy golden tones, no photorealistic rendering"
+
+- shot_id: sh18
+  scene_id: s09
+  prompt:
+    subject: "two glass triangular prism props on wooden table — first normal orientation, second inverted and reversed — with six colored light bands entering reversed prism and converging toward single exit point"
+    action: "six colored light beams enter wide spread into reversed second prism, all six beams bend and converge toward center inside prism, emerge from other side as single narrow white beam hitting wall with small sparkle"
+    camera: "medium shot, side angle, static camera"
+    lighting: "dim dramatic indoor lab, flashlight beam as sole key light, colored spectrum lines converging to white point on wall with gentle glow"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly physics diagram style, two prism props on wooden table, spectrum colors (red orange yellow green blue violet) for entering beams, single white output beam with sparkle on wall, indoor lab background, no photorealistic rendering"
+
+- shot_id: sh19
+  scene_id: s09
+  prompt:
+    subject: "two chibi anime figures — Minh (left, large round head, dark spiky hair, white t-shirt) and An (right, neat hair, white lab coat) — both leaning forward with intense attention toward small white glowing circle on wall"
+    action: "both chibi figures lean bodies forward from waist toward white glowing point on wall, both faces turned inward with wide eyes focused on single white light, mouths slightly open in anticipation"
+    camera: "wide shot, front angle, static camera"
+    lighting: "dim indoor lab, single white glowing point on wall as focal light, soft warm golden ambient fill from above"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, two expressive chibi faces leaning forward, prism setup on table between figures and wall, small white circle glowing on wall, indoor wooden lab background, warm earthy tones, no photorealistic rendering"
+
+- shot_id: sh20
+  scene_id: s09
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, eyes wide open and completely blank in stunned silence, mouth slightly open, dark spiky hair, white t-shirt, both arms hanging straight down at sides motionless"
+    action: "stands completely motionless with both arms dropped to sides, large round head level and facing forward, eyes wide and blank with round pupils in complete stunned disbelief, no movement at all"
+    camera: "medium shot, front angle, static camera"
+    lighting: "soft warm indoor lab ambient, golden even light"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, wide blank stunned chibi face expression, arms dropped completely, small ellipsis (...) floating above head, warm indoor lab background, no photorealistic rendering"
+
+- shot_id: sh21
+  scene_id: s10
+  prompt:
+    subject: "chibi anime character (An) with large round head, warm gentle smile, neat dark hair, white lab coat, right arm extended open-palm toward white beam spot on wall, left arm relaxed at side"
+    action: "extends right arm with open palm toward white glowing circle on wall, then sweeps arm back toward Minh in slow explanatory gesture, body turns slightly, eyebrows raised gently with knowing smile"
+    camera: "medium shot, three-quarter angle, static camera"
+    lighting: "soft warm indoor lab ambient, white circle on wall glowing gently, golden light from above"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, warm gentle chibi face expression, lab coat visible, gesture arc lines visible, white glowing circle on wooden wall, indoor lab background, no photorealistic rendering"
+
+- shot_id: sh22
+  scene_id: s10
+  prompt:
+    subject: "chibi anime boy (Minh) with large round head, expression slowly transitioning from stunned blankness to dawning wonder, eyes softening from wide shock to gentle curiosity, dark spiky hair, white t-shirt"
+    action: "slowly lifts large round head upward from bowed position, shoulders relax and fall from tense posture, eyes shift from wide blank shock to soft curious openness, mouth closes from open to small wondering expression"
+    camera: "medium close-up, front angle, static camera"
+    lighting: "soft warm indoor lab light, gentle golden glow illuminating face, warm ambient"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, expressive transitioning chibi face from stunned to wonder, small lightbulb outline appearing above dark spiky hair, warm indoor lab background, no photorealistic rendering"
+
+- shot_id: sh23
+  scene_id: s11
+  prompt:
+    subject: "chibi cartoon hands (An) with white lab coat cuffs holding rectangular smartphone screen facing camera, phone screen showing zoomed-in grid of tiny RGB pixel dot clusters"
+    action: "holds phone screen directly toward camera with both steady hands, screen clearly visible showing regular grid of tiny pixel clusters each containing three colored dots grouped together in red green blue"
+    camera: "close-up, front angle, static camera"
+    lighting: "soft indoor ambient, phone screen casting gentle colored glow on surrounding hands and lab coat cuffs"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, expressive cartoon hands with lab coat cuffs, phone rectangle prop with RGB pixel grid on screen shown as tiny red green blue dot clusters, warm neutral background, no photorealistic rendering"
+
+- shot_id: sh24
+  scene_id: s11
+  prompt:
+    subject: "two chibi anime figures side by side — Minh (left, large round head, dark spiky hair, white t-shirt, rosy cheeks) and An (right, neat dark hair, white lab coat) — both looking at phone screen held between them, Minh nodding slowly with new calm understanding expression"
+    action: "both chibi figures stand close together looking at same phone screen, Minh on left nods large round head slowly up and down with relaxed understanding smile, An on right gestures toward phone screen with free hand"
+    camera: "wide shot, front angle, static camera"
+    lighting: "soft warm indoor ambient light, gentle phone screen glow between both figures, golden lab light from above"
+    constraints: "Studio Ghibli-inspired 2D hand-drawn animation, painterly warm style, two expressive chibi faces with warm expressions, phone prop between figures, indoor lab background with warm wooden tones and shelves, no photorealistic rendering"

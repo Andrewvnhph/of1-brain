@@ -1,0 +1,20 @@
+title: "Ánh Sáng Trắng Có Màu Không?"
+characters:
+  - name: "Minh"
+    role: "student"
+    personality: "tự tin, hay tranh luận, tò mò"
+  - name: "An"
+    role: "scientist"
+    personality: "kiên nhẫn, quan sát tinh tế, hài hước nhẹ"
+conflict: "Minh tin chắc rằng lăng kính tạo ra màu sắc từ ánh sáng trắng vô màu — giống như pha phẩm màu vào nước trong suốt — và bản thân ánh sáng không hề có màu gì cả."
+resolution: "Newton chiếu ánh sáng qua lăng kính thứ hai ngược chiều — các dải màu hội tụ lại thành ánh sáng trắng. Màu không phải do lăng kính tạo ra mà đã ẩn sẵn trong ánh sáng từ trước. Đó chính là lý do màn hình điện thoại chỉ cần 3 màu RGB để tái tạo hàng triệu màu sắc khác nhau."
+acts:
+  - name: "Setup"
+    duration_min: 1
+    summary: "Minh và An đứng quan sát cầu vồng sau cơn mưa. Minh tự tin lý giải — giọt nước tạo màu sắc từ ánh sáng mặt trời vốn không có màu. An đặt một câu hỏi nhỏ: nếu ánh sáng không có màu, thì màu đó đến từ đâu? Câu hỏi khiến Minh lần đầu tiên không có câu trả lời."
+  - name: "Exploration"
+    duration_min: 7
+    summary: "Vào phòng thí nghiệm, Minh thử chiếu đèn pin qua lăng kính — xuất hiện quang phổ màu rực rỡ, càng củng cố niềm tin. Thử dùng kính lọc đỏ — dải màu thu hẹp nhưng không biến mất. Thử che từng vùng màu riêng lẻ — phát hiện từng màu có thể bị chặn độc lập. Thử hai lăng kính cùng chiều — màu tản rộng hơn chứ không gộp lại. Hai lần thất bại liên tiếp khiến Minh bắt đầu nghi ngờ. An đề nghị lật ngược lăng kính thứ hai."
+  - name: "Revelation"
+    duration_min: 2
+    summary: "Lăng kính thứ hai ngược chiều hội tụ toàn bộ dải màu trở lại thành ánh sáng trắng. Minh sững sờ — lăng kính chỉ tách màu ra, không tạo ra màu. An chỉ vào màn hình điện thoại: ba điểm sáng RGB nhỏ xíu phối hợp tạo ra hàng triệu màu sắc, vì não người nhận tín hiệu bước sóng và tự diễn giải thành màu."

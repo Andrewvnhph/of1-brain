@@ -1,0 +1,263 @@
+scenes:
+  - id: "s01"
+    act: "Setup"
+    vi_narrator: "Sau một cơn mưa lớn, cầu vồng bảy màu xuất hiện trên bầu trời. Minh đứng nhìn và gật gù — đây là điều Minh đã biết từ nhỏ: giọt nước mưa tạo ra màu sắc từ ánh sáng mặt trời vốn không có màu."
+    en_narrator: "After a heavy rain, a seven-color rainbow stretches across the sky. Minh nods knowingly — raindrops create colors from sunlight, which is colorless. Simple. Obvious. Or so Minh thinks."
+    vi_dialogue:
+      - character: "Minh"
+        line: "Cầu vồng đẹp thật. Giọt nước mưa tạo ra màu từ ánh sáng trắng. Ánh sáng mặt trời bản thân nó không có màu gì cả."
+    en_dialogue:
+      - character: "Minh"
+        line: "Beautiful rainbow. Water droplets create colors from white light. Sunlight itself has no color at all."
+    duration_sec: 45
+
+  - id: "s02"
+    act: "Setup"
+    vi_narrator: "An nghe xong, chỉ hỏi một câu. Chỉ một câu thôi — nhưng Minh không có câu trả lời."
+    en_narrator: "An listens, then asks just one question. One simple question — and Minh has no answer."
+    vi_dialogue:
+      - character: "An"
+        line: "Nếu ánh sáng không có màu... thì màu đến từ đâu?"
+      - character: "Minh"
+        line: "Thì... giọt nước tạo ra chứ..."
+      - character: "An"
+        line: "Giọt nước tạo ra từ gì?"
+    en_dialogue:
+      - character: "An"
+        line: "If light has no color... where does the color come from?"
+      - character: "Minh"
+        line: "Well... the water droplets create it..."
+      - character: "An"
+        line: "Create it from what?"
+    duration_sec: 30
+
+  - id: "s03"
+    act: "Exploration"
+    vi_narrator: "Hai người vào phòng thí nghiệm. An lấy ra một lăng kính thủy tinh nhỏ. Minh chiếu đèn pin qua lăng kính — và trên bức tường trắng xuất hiện một dải màu rực rỡ. Minh cười đắc thắng."
+    en_narrator: "They head to the lab. An pulls out a small glass prism. Minh shines a flashlight through it — and a vivid rainbow strip appears on the white wall. Minh grins triumphantly."
+    vi_dialogue:
+      - character: "Minh"
+        line: "Thấy chưa! Lăng kính tạo ra màu từ ánh sáng trắng. Đúng như tôi nói!"
+      - character: "An"
+        line: "Hmm. Thú vị đấy. Thử thêm một thứ xem sao."
+    en_dialogue:
+      - character: "Minh"
+        line: "See! The prism creates color from white light. Just like I said!"
+      - character: "An"
+        line: "Interesting. Let's try one more thing."
+    duration_sec: 40
+
+  - id: "s04"
+    act: "Exploration"
+    vi_narrator: "An đưa cho Minh một tấm kính lọc màu đỏ. Nếu lăng kính tạo ra màu, thì chặn ánh sáng đầu vào bằng màu đỏ sẽ làm thay đổi toàn bộ quang phổ. Minh đặt kính lọc trước đèn pin và chờ."
+    en_narrator: "An hands Minh a red color filter. If the prism creates color, then filtering the input light to red should change everything. Minh places the filter in front of the flashlight and waits."
+    vi_dialogue:
+      - character: "Minh"
+        line: "Dải màu sẽ biến mất hoàn toàn vì chỉ có ánh sáng đỏ vào lăng kính."
+    en_dialogue:
+      - character: "Minh"
+        line: "The whole spectrum will disappear since only red light enters the prism."
+    duration_sec: 35
+
+  - id: "s05"
+    act: "Exploration"
+    vi_narrator: "Dải quang phổ thu hẹp lại — chỉ còn ánh đỏ và cam mờ nhạt. Nhưng không biến mất hoàn toàn. Minh nhíu mày. Điều này không khớp với lý thuyết. An không nói gì, chỉ quan sát."
+    en_narrator: "The spectrum narrows — only red and a faint orange remain. But it doesn't disappear entirely. Minh frowns. This doesn't match the theory. An says nothing, just watches."
+    vi_dialogue:
+      - character: "Minh"
+        line: "Lạ... Phải là không còn màu nào chứ. Có lẽ kính lọc không hoàn hảo."
+      - character: "An"
+        line: "Có thể vậy. Thử che từng màu trong quang phổ xem sao."
+    en_dialogue:
+      - character: "Minh"
+        line: "Strange... there should be no colors left. Maybe the filter isn't perfect."
+      - character: "An"
+        line: "Maybe. Try blocking individual colors in the spectrum."
+    duration_sec: 40
+
+  - id: "s06"
+    act: "Exploration"
+    vi_narrator: "Minh đặt ngón tay lên từng vùng màu trong dải quang phổ. Từng màu biến mất riêng lẻ — đỏ biến mất, cam vẫn còn; che cam, xanh vẫn còn. Mỗi màu tồn tại độc lập. Không phải một khối duy nhất do lăng kính tạo ra."
+    en_narrator: "Minh places a finger on each color band in the spectrum. Each color disappears separately — block red, orange stays; block orange, green stays. Every color exists independently. Not a single block created by the prism."
+    vi_dialogue:
+      - character: "Minh"
+        line: "Khoan... từng màu tách biệt nhau? Nếu lăng kính tạo ra màu thì phải tắt hết cùng lúc chứ..."
+      - character: "An"
+        line: "Đúng rồi. Tiếp tục đi."
+    en_dialogue:
+      - character: "Minh"
+        line: "Wait... each color is separate? If the prism creates color they should all disappear together..."
+      - character: "An"
+        line: "Exactly. Keep going."
+    duration_sec: 45
+
+  - id: "s07"
+    act: "Exploration"
+    vi_narrator: "Minh đặt một lăng kính thứ hai ngay sau lăng kính đầu tiên, cùng chiều. Dải màu không gộp lại — nó tản ra rộng hơn. Minh thở dài. Hai lần thất bại. Điều gì đó sai sai trong lý thuyết ban đầu."
+    en_narrator: "Minh places a second prism right after the first, same orientation. The colors don't merge — they spread even wider. Minh sighs. Two failed attempts. Something is wrong with the original theory."
+    vi_dialogue:
+      - character: "Minh"
+        line: "Vẫn không gộp lại... Lăng kính chỉ tiếp tục tách thêm màu?"
+      - character: "An"
+        line: "Minh thử lật ngược lăng kính thứ hai xem."
+    en_dialogue:
+      - character: "Minh"
+        line: "Still not merging... the prism just keeps splitting further?"
+      - character: "An"
+        line: "Try flipping the second prism upside down."
+    duration_sec: 40
+
+  - id: "s08"
+    act: "Exploration"
+    vi_narrator: "An nhẹ nhàng lấy lăng kính thứ hai, lật ngược lại và đặt vào đúng vị trí trong dải màu. Một thí nghiệm đơn giản — nhưng kết quả sẽ thay đổi hoàn toàn cách Minh nhìn ánh sáng."
+    en_narrator: "An quietly picks up the second prism, flips it upside down, and positions it precisely within the spread of colors. A simple move — but the result is about to change everything Minh knows about light."
+    duration_sec: 30
+
+  - id: "s09"
+    act: "Revelation"
+    vi_narrator: "Các dải màu đi vào lăng kính thứ hai ngược chiều... và hội tụ. Chậm rãi, từng màu xếp vào nhau. Trên tường xuất hiện một vệt sáng trắng duy nhất. Không còn màu nào cả. Chỉ là ánh sáng trắng."
+    en_narrator: "The color bands enter the reversed second prism... and converge. Slowly, each color folds into the next. On the wall — a single beam of white light. No colors. Just white."
+    vi_dialogue:
+      - character: "Minh"
+        line: "..."
+      - character: "An"
+        line: "Lăng kính không tạo ra màu, Minh ơi. Nó chỉ tách những gì đã có sẵn trong ánh sáng."
+    en_dialogue:
+      - character: "Minh"
+        line: "..."
+      - character: "An"
+        line: "The prism doesn't create color, Minh. It only separates what was already inside the light."
+    duration_sec: 45
+
+  - id: "s10"
+    act: "Revelation"
+    vi_narrator: "Ánh sáng trắng là tổng hợp của tất cả màu sắc — không phải không có màu, mà là có đủ màu cùng lúc. Newton đã chứng minh điều này từ thế kỷ 17. Màu sắc không do lăng kính tạo ra — lăng kính chỉ là chiếc kéo tách chúng ra."
+    en_narrator: "White light is the combination of all colors — not colorless, but all colors at once. Newton proved this in the 17th century. Colors aren't created by the prism — the prism is just scissors cutting them apart."
+    vi_dialogue:
+      - character: "Minh"
+        line: "Vậy ánh sáng mặt trời... thực ra chứa tất cả màu sắc bên trong?"
+      - character: "An"
+        line: "Đúng. Và não của Minh nhận tín hiệu bước sóng rồi tự diễn giải thành màu mà Minh thấy."
+    en_dialogue:
+      - character: "Minh"
+        line: "So sunlight... actually contains all the colors inside it?"
+      - character: "An"
+        line: "Exactly. And your brain receives wavelength signals and interprets them as the colors you see."
+    duration_sec: 45
+
+  - id: "s11"
+    act: "Revelation"
+    vi_narrator: "An chỉ vào màn hình điện thoại. Zoom sát vào — hàng triệu điểm nhỏ, mỗi điểm gồm ba chấm sáng: đỏ, xanh lá, xanh dương. Chỉ ba màu, nhưng phối hợp với nhau, chúng tạo ra mọi màu Minh từng thấy trong đời. Vì não Minh làm phần còn lại."
+    en_narrator: "An points to the phone screen. Zoom in close — millions of tiny dots, each made of three lights: red, green, blue. Just three colors, but combined, they create every color Minh has ever seen. Because the brain does the rest."
+    vi_dialogue:
+      - character: "Minh"
+        line: "RGB... Ba màu tạo ra tất cả. Giống hệt ánh sáng trắng chứa tất cả màu sắc."
+      - character: "An"
+        line: "Giờ Minh thấy cầu vồng khác rồi chứ?"
+      - character: "Minh"
+        line: "Khác hoàn toàn."
+    en_dialogue:
+      - character: "Minh"
+        line: "RGB... Three colors make everything. Just like white light contains all colors."
+      - character: "An"
+        line: "Do you see rainbows differently now?"
+      - character: "Minh"
+        line: "Completely different."
+    duration_sec: 40
+
+shots:
+  - id: "sh01"
+    scene_id: "s01"
+    description: "Minh and An stand side by side looking up at rainbow arc, wide shot from front"
+
+  - id: "sh02"
+    scene_id: "s01"
+    description: "Minh gestures upward confidently explaining rainbow, medium shot from three-quarter angle"
+
+  - id: "sh03"
+    scene_id: "s02"
+    description: "An raises one finger with calm questioning expression toward Minh, medium shot front"
+
+  - id: "sh04"
+    scene_id: "s02"
+    description: "Minh frozen mid-gesture, mouth open with no answer, medium close-up front"
+
+  - id: "sh05"
+    scene_id: "s03"
+    description: "Minh shines flashlight through triangular prism, rainbow spectrum fans out on white wall, medium side shot"
+
+  - id: "sh06"
+    scene_id: "s03"
+    description: "Minh points triumphantly at rainbow spectrum on wall, arms raised, medium front shot"
+
+  - id: "sh07"
+    scene_id: "s04"
+    description: "An holds red color filter glass toward Minh, close-up of hands passing filter"
+
+  - id: "sh08"
+    scene_id: "s04"
+    description: "Minh places red filter in front of flashlight beam, medium side shot showing setup"
+
+  - id: "sh09"
+    scene_id: "s05"
+    description: "Spectrum on wall narrows to only red-orange band, Minh leans forward squinting, medium side"
+
+  - id: "sh10"
+    scene_id: "s05"
+    description: "Minh frowns with arms crossed, looking at partial spectrum result, medium front shot"
+
+  - id: "sh11"
+    scene_id: "s06"
+    description: "Minh extends one finger to block single color band in spectrum, medium close-up side"
+
+  - id: "sh12"
+    scene_id: "s06"
+    description: "One color disappears from spectrum while others remain, Minh's head tilts in surprise, medium shot"
+
+  - id: "sh13"
+    scene_id: "s06"
+    description: "Minh blocks different color bands one by one, each disappears independently, medium side shot"
+
+  - id: "sh14"
+    scene_id: "s07"
+    description: "Minh places second prism after first prism in beam path, both same orientation, medium side shot"
+
+  - id: "sh15"
+    scene_id: "s07"
+    description: "Colors spread wider beyond second prism rather than merging, Minh steps back sighing, wide shot"
+
+  - id: "sh16"
+    scene_id: "s08"
+    description: "An picks up second prism and flips it upside down with deliberate motion, close-up hands"
+
+  - id: "sh17"
+    scene_id: "s08"
+    description: "An positions reversed prism carefully in rainbow beam, medium side shot showing both prisms"
+
+  - id: "sh18"
+    scene_id: "s09"
+    description: "Color bands enter reversed prism and begin converging into single point, medium side shot"
+
+  - id: "sh19"
+    scene_id: "s09"
+    description: "Single white beam exits second prism and hits wall, Minh and An both leaning in to watch, wide shot"
+
+  - id: "sh20"
+    scene_id: "s09"
+    description: "Minh stands motionless staring at white beam, arms dropped, medium front shot"
+
+  - id: "sh21"
+    scene_id: "s10"
+    description: "An gestures from white wall beam back toward Minh with open hand, medium three-quarter shot"
+
+  - id: "sh22"
+    scene_id: "s10"
+    description: "Minh looks up slowly with new expression of understanding, medium close-up front"
+
+  - id: "sh23"
+    scene_id: "s11"
+    description: "An holds phone screen up close to camera showing RGB pixel grid, close-up front shot"
+
+  - id: "sh24"
+    scene_id: "s11"
+    description: "Minh and An stand together looking at phone, Minh nods slowly, wide shot from front"

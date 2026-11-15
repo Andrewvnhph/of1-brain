@@ -17,6 +17,25 @@ import time
 import argparse
 from pathlib import Path
 
+
+def _load_dotenv(start: Path) -> None:
+    """Walk up from start looking for .env, load key=value pairs into os.environ."""
+    for directory in [start, *start.parents]:
+        env_file = directory / ".env"
+        if env_file.exists():
+            for line in env_file.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, _, value = line.partition("=")
+                key = key.strip()
+                value = value.strip().strip('"').strip("'")
+                os.environ.setdefault(key, value)
+            break
+
+
+_load_dotenv(Path(__file__).parent)
+
 try:
     import anthropic
 except ImportError:
