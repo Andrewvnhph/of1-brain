@@ -15,6 +15,7 @@
 - TODO cross-cutting (không thuộc module nào) → `[overview]`.
 
 ## TODO (dev)
+- [x] [+ui] **Nghiên cứu thư viện bảng (table) cho UI** — so sánh các thư viện hỗ trợ: (1) aggregation view (sum/avg/count theo group), (2) tree view (row hierarchy), (3) copy/paste như Excel, (4) inline edit trực tiếp trên dòng. Mục tiêu: tìm phương án thay thế hoặc bổ sung cho VGrid hiện tại. ✅ **research done** → `designs/of1-tms/research-ui-table-libraries.md`
 - [x] [bill,core] **Pricing Batch — DB + UI Import Excel** —
     - `lgc_tms_customer_transport_pricing_fee`: bổ sung cột `unit VARCHAR` default `'SHIPMENT'`
     - UI Import Pricing Batch from Excel: layout chia dọc — bên trái hiển thị log map cột (vd: `Mode: flowType`, `Khách hàng: customerName`, `Cước: fee/...`), bên phải preview/kết quả import ✅ `ai/pricing-batch` commit `e31c640b15`
@@ -58,6 +59,7 @@
 
 | TODO | module | design | openspecs | code | review | status |
 |---|---|---|---|---|---|---|
+| Nghiên cứu thư viện bảng UI | `+ui` | [`research-ui-table-libraries.md`](../../designs/of1-tms/research-ui-table-libraries.md) | — | — | — | ✅ **research done** |
 | AsyncButton common utility — auto-disable while processing + wire confirmGoodsTracking | `+ui,ops` | — | — | branch `ai/async-button-util` · HEAD `3612078753` · 4 files: `AsyncButton.tsx` (onAction/done pattern) + `confirmGoodsTracking` optional onDone + List + SummaryView dùng AsyncButton | — | ✅ **done** |
 | confirmVehicleTripTracking Zalo notify → Queueable async | `ops` | — | — | branch `ai/confirm-tracking-zalo-queue` · HEAD `ea3ea7951d` · 1 file: `botEvent.setProcessMode(Queueable)` | — | ✅ **merged → develop** |
 | Pricing Batch — DB + UI Import Excel (unit column + vertical split import UI) | `bill,core` | — | — | branch `ai/pricing-batch` · HEAD `e31c640b15` · 5 files: entity `unit VARCHAR(50)` + logic parseFeeKey 6-part split + Liquibase `20261113115109` ALTER TABLE + UI vertical split left=mapping log right=grid | TS implicit | ✅ **done** |
