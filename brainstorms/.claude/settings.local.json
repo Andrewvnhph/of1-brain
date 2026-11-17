@@ -25,7 +25,8 @@
       "Bash(gradle :datatp-logistics-module-tms-core:compileJava --offline)",
       "Bash(bash *)",
       "Bash(git -C /Users/admin/OF1/forgejo/of1-platform/of1-brain log --oneline -3)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Skill(of1-git-tools:commit)"
     ]
   }
 }
