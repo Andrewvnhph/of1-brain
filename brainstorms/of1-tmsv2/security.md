@@ -8,6 +8,7 @@
 | Security foundation | — | — | `of1-tmsv2/module/core/` | tests ✓ | ✅ done |
 | Geo reference tables + VN 2025 seed data + JPA audit auto-fill | — | — | branch `ai/geo-foundation` · HEAD `e5f017c` · 14 files | — | ✅ **done** |
 | `@of1-tms/ui` workspace — extract Group 1 wbootstrap core from of1-webui | — | — | branch `ai/geo-foundation` · HEAD `a2cc9c2` · 98 files · `webui/ui/src/{wbootstrap/core,wbootstrap/grid,wbootstrap/input,util,i18n.tsx}` + stubs `app/host` + `server` + `package.json` + `tsconfig.json` + alias in `rsbuild.config.ts` | build ✅ | ✅ **done** |
+| VGrid render code review — 9-point fix | — | — | branch `ai/geo-foundation` · HEAD `ac5a33a` · 6 files | build ✅ | ✅ **done** |
 
 **Deliverables** (branch `ai/xuong-phim-ai`, project `/Users/admin/OF1/forgejo/of1-tmsv2/`):
 
