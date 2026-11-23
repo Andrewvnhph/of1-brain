@@ -9,6 +9,7 @@
 | Geo reference tables + VN 2025 seed data + JPA audit auto-fill | — | — | branch `ai/geo-foundation` · HEAD `e5f017c` · 14 files | — | ✅ **done** |
 | `@of1-tms/ui` workspace — extract Group 1 wbootstrap core from of1-webui | — | — | branch `ai/geo-foundation` · HEAD `a2cc9c2` · 98 files · `webui/ui/src/{wbootstrap/core,wbootstrap/grid,wbootstrap/input,util,i18n.tsx}` + stubs `app/host` + `server` + `package.json` + `tsconfig.json` + alias in `rsbuild.config.ts` | build ✅ | ✅ **done** |
 | VGrid render code review — 9-point fix | — | — | branch `ai/geo-foundation` · HEAD `ac5a33a` · 6 files | build ✅ | ✅ **done** |
+| CoreLocationService + SqlBuilder/SqlQueryManager + Groovy SQL pattern | — | — | branch `ai/geo-foundation` · HEAD `1671ef2` · 9 files · `SqlBuilder` (FILTER helpers) + `SqlQueryManager` (Groovy compile+cache) + `CoreLocationService` (search/CRUD) + `LocationSearchSql.groovy` + 8 IT cases | build ✅ | ✅ **done** |
 | AppContext/PageContext/AppRegistry + shell breadcrumb navigation + VGrid FieldDataType fix | — | — | branch `ai/geo-foundation` · HEAD `f499071` · 27 files · `ui/src/app/{AppContext,AppRegistry,PageContext,backend/}` + `host/src/layout/{AppPage,BreadcrumbBar,PopupRenderer}` + AppShell/Sidebar/AppTile wired; rsbuild alias bug fixed (use `tools.rspack.resolve.alias`) | build ✅ | ✅ **done** |
 
 **Deliverables** (branch `ai/xuong-phim-ai`, project `/Users/admin/OF1/forgejo/of1-tmsv2/`):
