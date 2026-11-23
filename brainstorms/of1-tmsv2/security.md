@@ -11,6 +11,7 @@
 | VGrid render code review — 9-point fix | — | — | branch `ai/geo-foundation` · HEAD `ac5a33a` · 6 files | build ✅ | ✅ **done** |
 | CoreLocationService + SqlBuilder/SqlQueryManager + Groovy SQL pattern | — | — | branch `ai/geo-foundation` · HEAD `1671ef2` · 9 files · `SqlBuilder` (FILTER helpers) + `SqlQueryManager` (Groovy compile+cache) + `CoreLocationService` (search/CRUD) + `LocationSearchSql.groovy` + 8 IT cases | build ✅ | ✅ **done** |
 | AppContext/PageContext/AppRegistry + shell breadcrumb navigation + VGrid FieldDataType fix | — | — | branch `ai/geo-foundation` · HEAD `f499071` · 27 files · `ui/src/app/{AppContext,AppRegistry,PageContext,backend/}` + `host/src/layout/{AppPage,BreadcrumbBar,PopupRenderer}` + AppShell/Sidebar/AppTile wired; rsbuild alias bug fixed (use `tools.rspack.resolve.alias`) | build ✅ | ✅ **done** |
+| GeoPage UI + CoreGeoService — country/province/ward/location tabs + CoreLocationServiceIT 8 cases | — | — | branch `ai/geo-foundation` · HEAD `7c48b1c` · 12 files · `CoreGeoService` (searchCountries/Provinces/Wards) + `GeoPage` tab switcher + 4 list views + `DbEntityList`/`AppComponent` base + `CoreLocationServiceIT` integration test | build ✅ | ✅ **done** |
 
 **Deliverables** (branch `ai/xuong-phim-ai`, project `/Users/admin/OF1/forgejo/of1-tmsv2/`):
 
