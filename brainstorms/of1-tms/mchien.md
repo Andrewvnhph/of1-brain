@@ -60,6 +60,7 @@
 
 | TODO | module | design | openspecs | code | review | status |
 |---|---|---|---|---|---|---|
+| AppTile quick-pin button + standalone DefaultTabPane cho host | `+ui` | — | — | branch `ai/geo-foundation` · HEAD `2f73480` · 5 files: `AppTile.tsx` pin/unpin hover button (Bookmark/X); `ShellContext.ts` add `onTogglePin`; `AppShell.tsx` togglePin logic; `apps.ts` fix Icon type; `components/TabPane.tsx` new standalone `DefaultTabPane` + `TabPaneConfig` (orange underline, Icon support, renderActions slot) | TS no new errors | ✅ **done** |
 | Sidebar light-orange theme — replace dark navy palette | `+ui` | — | — | branch `ai/geo-foundation` · HEAD `8fe633b` · 1 file: `Sidebar.tsx` — new `C` palette constant (orange-50/100/200 bg, orange-950/800 text, orange-600 accent) replaces dark navy (`#1e2140`) + white text | — | ✅ **done** |
 | TopBar "OF1 TMS" logo → navigate to home AppGrid | `+ui` | — | — | branch `ai/geo-foundation` · HEAD `940340a` · 1 file: `TopBar.tsx` wrap title in `<Link to="/">` | TS clean | ✅ **done** |
 | VGrid resize: move ResizeObserver to VGrid → remount view via viewId on resize | `+ui` | — | — | branch `ai/geo-foundation` · HEAD `1f9c502` · 2 files: `VGrid.tsx` containerDiv ref + ResizeObserver (150ms debounce) → `forceUpdateView(true)` bumps `model.lastModifiedList` → VGridViewManager remounts with new key → TableView fresh componentDidMount → correct clientHeight; `TableView.tsx` remove ResizeObserver/componentWillUnmount, keep setDivElement stable ref | TS no errors | ✅ **done** |
