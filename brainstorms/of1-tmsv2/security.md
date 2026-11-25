@@ -5,6 +5,7 @@
 
 | TODO | design | openspecs | code | review | status |
 |---|---|---|---|---|---|
+| VGrid agg/bucket rows transparent + aggPanelWidth separate from treeWidth | `+ui` | — | — | branch `ai/geo-foundation` · HEAD `3ea4065` · 6 files: `TableDataCell`+`FillerDataCell` transparent for agg/bucket; `TableAggregationViewModel` `maxWidth=55`+`getFieldContainerWidthCustom()`; `TableView` `aggPanelWidth` wrapper div | — | ✅ **done** |
 | Security foundation | — | — | `of1-tmsv2/module/core/` | tests ✓ | ✅ done |
 | Geo reference tables + VN 2025 seed data + JPA audit auto-fill | — | — | branch `ai/geo-foundation` · HEAD `e5f017c` · 14 files | — | ✅ **done** |
 | `@of1-tms/ui` workspace — extract Group 1 wbootstrap core from of1-webui | — | — | branch `ai/geo-foundation` · HEAD `a2cc9c2` · 98 files · `webui/ui/src/{wbootstrap/core,wbootstrap/grid,wbootstrap/input,util,i18n.tsx}` + stubs `app/host` + `server` + `package.json` + `tsconfig.json` + alias in `rsbuild.config.ts` | build ✅ | ✅ **done** |
