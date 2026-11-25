@@ -60,6 +60,7 @@
 
 | TODO | module | design | openspecs | code | review | status |
 |---|---|---|---|---|---|---|
+| Sidebar light-orange theme — replace dark navy palette | `+ui` | — | — | branch `ai/geo-foundation` · HEAD `8fe633b` · 1 file: `Sidebar.tsx` — new `C` palette constant (orange-50/100/200 bg, orange-950/800 text, orange-600 accent) replaces dark navy (`#1e2140`) + white text | — | ✅ **done** |
 | TopBar "OF1 TMS" logo → navigate to home AppGrid | `+ui` | — | — | branch `ai/geo-foundation` · HEAD `940340a` · 1 file: `TopBar.tsx` wrap title in `<Link to="/">` | TS clean | ✅ **done** |
 | VGrid resize: move ResizeObserver to VGrid → remount view via viewId on resize | `+ui` | — | — | branch `ai/geo-foundation` · HEAD `1f9c502` · 2 files: `VGrid.tsx` containerDiv ref + ResizeObserver (150ms debounce) → `forceUpdateView(true)` bumps `model.lastModifiedList` → VGridViewManager remounts with new key → TableView fresh componentDidMount → correct clientHeight; `TableView.tsx` remove ResizeObserver/componentWillUnmount, keep setDivElement stable ref | TS no errors | ✅ **done** |
 | VGrid TS fix: remove stale `'Boolean'`/`'Date'` capitalized type literals | `+ui` | — | — | branch `ai/geo-foundation` · HEAD `5d5999f` · 2 files: `TableDataCell.tsx` drop `\|\| type === 'Boolean'` + `TableHeaderCell.tsx` drop `== 'Date'` dead branches (FieldDataType all-lowercase) | TS no errors | ✅ **done** |
