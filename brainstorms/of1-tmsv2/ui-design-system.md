@@ -5,6 +5,7 @@
 
 | TODO | design | openspecs | code | review | status |
 |---|---|---|---|---|---|
+| VGrid column header menu — sort, inline filter, pin, hide; status icons; default sortable+filterable | — | — | branch `ai/geo-foundation` · HEAD `e1d3a56` · 3 files: `TableHeaderCell` ColMenuBtn+InlineFilter+hover status icons; `ListModel` sortField/sortDesc tracking; `VGridConfigModel` default sortable=true dataType='string' | build ✅ | ✅ **done** |
 | Radix Colors + Dark Mode | `../designs/of1-tmsv2/ui-design-system.md` | — | branch `ai/geo-foundation` · HEAD `47f8b79` · 9 files: `ThemeContext` + `bootstrap.tsx` Radix CSS imports + `stylesheet.scss` color overrides + `TopBar` toggle + `AppShell` bg var | build ✅ | ✅ **done** |
 | Remove --phoenix-* layer (Radix direct) | — | — | branch `ai/geo-foundation` · HEAD `97a2455` · 6 files: `pxvar()` redef → Radix vars; bulk replace `var(--phoenix-*)` in grid+calendar; `stylesheet.scss` simplified; TopBar+AppShell inline vars | build ✅ | ✅ **done** |
 | Lighten dark mode — semantic surface vars | — | — | branch `ai/geo-foundation` · HEAD `8aab3fa` · 4 files: `stylesheet.scss` add `--of1-bg/surface/border/border-mid` `:root` + `.dark` overrides (slate-4/5); `grid/stylesheet.scss` `.dark .v-grid` shift rows/header to slate-4/5/7; `AppShell` → `var(--of1-bg)`; `TopBar` → `var(--of1-surface/border)` | build ✅ | ✅ **done** |
