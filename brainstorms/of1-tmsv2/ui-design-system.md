@@ -5,6 +5,7 @@
 - [x] Dựng 1 chức năng Fav. có khả năng lưu lại config bảng. 1 user có thể có nhiều config bảng. Mục đích lưu lại các trạng thái ẩn/hiện, fixed-left right, sort col. Khi chọn 1 Fav thì lần tới khi reload lại kiểm tra nếu có fav -> hệ thống tự lấy fav gần nhất (BE persistence: UIGridFavorite entity + tms.ui_grid_favorite table + UIGridFavoriteService RPC + async FE FavoriteService). ✅ ai/geo-foundation commit `0407a7c`
 - [x] Kiểm tra popover tự động chọn vị trí show left or right khi thiếu không gian — ColMenuBtn auto-flip + đóng gói `computeAnchoredPos` + `useAnchoredPopover` hook vào `wbootstrap/core`. ✅ ai/geo-foundation commit `40c3cd9`
 - [x] Thử khả năng kéo ô để chép dữ liệu từ ô trên xuống ô dưới như Excel — Excel fill-down drag handle (small blue square bottom-right of focused editable cell), dashed blue overlay shows range, mouseup copies source value to all rows. ✅ ai/geo-foundation commit `02c496f`
+- [ ] Rewrite + upgrade Columns Control panel — (1) mở rộng form UI (wider/taller, better layout); (2) thêm drag-and-drop reorder rows để sort thứ tự cột trực tiếp trong panel. Hiện tại panel có: checkbox visible + radio Left/Middle/Right container per field.
 - [x] Kiểm tra col fixed (fixed-left/fixed-right) vì sao không scroll được — các cột này bị mất khả năng scroll dọc hoặc ngang khi interact. ✅ ai/geo-foundation commit `da0b4f4`
 
 ## Summary (AI)
